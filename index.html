@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Tracker</title>
+<title>JABA Ops Tracker</title>
 <style>
 :root {
   --bg:#F7F7F5; --surface:#FFFFFF; --surface2:#F1F0ED; --border:#E4E2DC; --text:#1A1916;
@@ -18,7 +18,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
 
-/* Sidebar */
 .sidebar{position:fixed;top:0;left:0;width:224px;height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;overflow-y:auto}
 .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
 .logo-mark{width:28px;height:28px;background:var(--text);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
@@ -36,7 +35,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .prog-track{height:4px;background:var(--surface2);border-radius:4px;overflow:hidden}
 .prog-fill{height:100%;background:var(--c-done-dot);border-radius:4px;transition:width .4s ease}
 
-/* Main */
 .main{margin-left:224px;min-height:100vh}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;gap:12px;flex-wrap:wrap}
 .topbar-left{display:flex;align-items:center;gap:12px}
@@ -51,7 +49,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-dark:hover{background:#333}
 .content{padding:24px 28px}
 
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px}
 .stat-n{font-size:24px;font-weight:600;letter-spacing:-1px;line-height:1}
@@ -59,7 +56,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .stat-bar{height:2px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
 .stat-bar-fill{height:100%;border-radius:2px;transition:width .3s}
 
-/* Filters */
 .filters{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .filter-select{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;font-size:12px;color:var(--text);font-family:var(--font);cursor:pointer}
 .search-wrap{position:relative;flex:1;max-width:260px}
@@ -67,7 +63,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .search-input{width:100%;padding:6px 10px 6px 30px;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;font-family:var(--font);background:var(--surface);color:var(--text)}
 .search-input:focus,.filter-select:focus{outline:2px solid var(--text);outline-offset:1px}
 
-/* Badges */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:500;white-space:nowrap}
 .badge::before{content:'';width:5px;height:5px;border-radius:50%;display:inline-block}
 .s-notstarted{background:var(--c-ns-bg);color:var(--c-ns-fg)}.s-notstarted::before{background:var(--c-ns-dot)}
@@ -82,7 +77,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .link-btn{display:inline-flex;align-items:center;gap:4px;color:#1565A0;font-size:12px;font-weight:500;text-decoration:none;padding:3px 8px;border-radius:5px;background:#E8F4FD}
 .link-btn:hover{background:#D0E8F8}
 
-/* Table */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 table{width:100%;border-collapse:collapse}
 thead{background:var(--surface2)}
@@ -95,7 +89,6 @@ tbody tr{cursor:pointer}
 .parent-tag{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 7px;border-radius:4px;display:inline-block}
 .notes-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text2)}
 
-/* Kanban */
 .kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
 .k-col{background:var(--surface2);border-radius:var(--radius-lg);padding:12px;min-height:160px}
 .k-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -109,7 +102,6 @@ tbody tr{cursor:pointer}
 .k-card-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
 .k-empty{text-align:center;padding:20px 0;font-size:12px;color:var(--text3)}
 
-/* By-Page / By-Owner group views */
 .group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 .group-card-header{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
@@ -120,18 +112,13 @@ tbody tr{cursor:pointer}
 .group-progress-seg{height:100%;transition:width .3s}
 .group-progress-labels{display:flex;gap:10px;margin-top:7px;flex-wrap:wrap}
 .group-progress-label{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px}
-.group-progress-label::before{content:'';width:7px;height:7px;border-radius:50%;display:inline-block}
 .group-rows{border-top:1px solid var(--border)}
 .group-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid var(--border);cursor:pointer;gap:8px;transition:background .1s}
 .group-row:last-child{border-bottom:none}
 .group-row:hover{background:var(--surface2)}
 .group-row-name{font-size:13px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .group-row-meta{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.owner-avatar{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500}
-.owner-avatar .owner-chip{width:30px;height:30px;font-size:12px}
-.owner-stat{font-size:12px;color:var(--text2)}
 
-/* Modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:50;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
 .modal-bg.open{display:flex}
 .modal{background:var(--surface);border-radius:var(--radius-lg);width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden}
@@ -151,14 +138,20 @@ tbody tr{cursor:pointer}
 .btn-delete{color:#B91C1C;border-color:#FECACA;background:#FEF2F2;margin-right:auto}
 .btn-delete:hover{background:#FEE2E2}
 
-/* Empty */
 .empty-state{text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
 .empty-icon{font-size:36px;margin-bottom:12px}
 .empty-state h3{font-size:15px;font-weight:600;margin-bottom:6px}
 .empty-state p{font-size:13px;color:var(--text2);max-width:300px;margin:0 auto 16px;line-height:1.5}
 
+/* Sync indicator */
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#9A9890;display:inline-block;margin-right:5px;transition:background .3s}
+.sync-dot.syncing{background:#F59E0B}
+.sync-dot.synced{background:#2E9550}
+.sync-dot.error{background:#EF4444}
+.sync-label{font-size:11px;color:var(--text3)}
+
 @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:900px){.sidebar{width:52px}.sidebar-logo h1,.sidebar-logo p,.nav-item span,.nav-label,.sidebar-footer .prog-label span:first-child{display:none}.main{margin-left:52px}.stats{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.sidebar{width:52px}.sidebar-logo h1,.sidebar-logo p,.nav-item span,.nav-label{display:none}.main{margin-left:52px}.stats{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.content{padding:16px}.topbar{padding:12px 16px}.kanban{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.group-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -169,8 +162,8 @@ tbody tr{cursor:pointer}
     <div class="logo-mark">
       <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" fill="white"/><rect x="8" y="1" width="5" height="5" rx="1" fill="white" opacity=".6"/><rect x="1" y="8" width="5" height="5" rx="1" fill="white" opacity=".6"/><rect x="8" y="8" width="5" height="5" rx="1" fill="white" opacity=".3"/></svg>
     </div>
-    <h1>Dashboard Tracker</h1>
-    <p>Project management</p>
+    <h1>JABA Ops</h1>
+    <p>Dashboard tracker</p>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-label">Views</div>
@@ -210,25 +203,26 @@ tbody tr{cursor:pointer}
     <div class="topbar-left">
       <h2 id="page-title">All pages</h2>
       <div class="view-toggle">
-        <button class="vt-btn active" id="vt-table" onclick="setView('table',this)">
+        <button class="vt-btn active" onclick="setView('table',this)">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
           Table
         </button>
-        <button class="vt-btn" id="vt-kanban" onclick="setView('kanban',this)">
+        <button class="vt-btn" onclick="setView('kanban',this)">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="13" rx="1"/><rect x="17" y="3" width="5" height="16" rx="1"/></svg>
           Kanban
         </button>
-        <button class="vt-btn" id="vt-bypage" onclick="setView('bypage',this)">
+        <button class="vt-btn" onclick="setView('bypage',this)">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           By page
         </button>
-        <button class="vt-btn" id="vt-byowner" onclick="setView('byowner',this)">
+        <button class="vt-btn" onclick="setView('byowner',this)">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           By owner
         </button>
       </div>
     </div>
     <div class="topbar-right">
+      <span class="sync-label"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Loading…</span></span>
       <button class="btn" onclick="exportCSV()">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         Export CSV
@@ -259,7 +253,6 @@ tbody tr{cursor:pointer}
   </div>
 </div>
 
-<!-- Modal -->
 <div class="modal-bg" id="modal-bg" onclick="maybeClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -317,7 +310,12 @@ tbody tr{cursor:pointer}
 </div>
 
 <script>
-const SK = 'dashboard_tracker_v3';
+// ── Supabase config ──
+const SUPABASE_URL = 'https://eglsyodljsnwcdieatda.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnbHN5b2RsanNud2NkaWVhdGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MDQyMjYsImV4cCI6MjA5NzM4MDIyNn0.h9eHJ7qSze3dKYxoBLYyYoSVi9z6n5eMBqeejWvm95g';
+const API = `${SUPABASE_URL}/rest/v1/pages`;
+const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`};
+
 const STATUS_ORDER = ['Not Started','Design','Development','Review','Done'];
 const STATUS_CLASS = {'Not Started':'s-notstarted','Design':'s-design','Development':'s-dev','Review':'s-review','Done':'s-done'};
 const STATUS_COLOR = {'Not Started':'var(--c-ns-dot)','Design':'var(--c-design-dot)','Development':'var(--c-dev-dot)','Review':'var(--c-review-dot)','Done':'var(--c-done-dot)'};
@@ -327,11 +325,31 @@ const STATUS_NAV = {'s-notstarted':'Not Started','s-design':'Design','s-dev':'De
 
 let items=[], view='table', navFilter='all', editingId=null;
 
-function load(){
-  try{const r=localStorage.getItem(SK);if(r)items=JSON.parse(r);}catch(e){items=[];}
-  render();
+function setSync(state, text){
+  const dot=document.getElementById('sync-dot');
+  const lbl=document.getElementById('sync-text');
+  dot.className='sync-dot '+state;
+  lbl.textContent=text;
 }
-function save(){try{localStorage.setItem(SK,JSON.stringify(items));}catch(e){}}
+
+async function dbFetch(url, opts={}){
+  const r=await fetch(url,{headers:HEADERS,...opts});
+  if(!r.ok) throw new Error(await r.text());
+  return r.status===204?null:r.json();
+}
+
+async function load(){
+  setSync('syncing','Loading…');
+  try{
+    items=await dbFetch(`${API}?order=updated.desc`);
+    setSync('synced','Synced');
+    render();
+  }catch(e){
+    setSync('error','Error loading');
+    console.error(e);
+  }
+}
+
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
@@ -339,13 +357,13 @@ function getFiltered(){
   const fp=document.getElementById('f-priority').value;
   const fo=document.getElementById('f-owner').value;
   const sq=(document.getElementById('search-input').value||'').toLowerCase();
-  const statusFilter = STATUS_NAV[navFilter];
+  const statusFilter=STATUS_NAV[navFilter];
   return items.filter(i=>{
-    if(navFilter==='week' && i.priority!=='This Week') return false;
-    if(statusFilter && i.status!==statusFilter) return false;
-    if(fp && i.priority!==fp) return false;
-    if(fo && i.owner!==fo) return false;
-    if(sq && !((i.name||'').toLowerCase().includes(sq)||(i.parent||'').toLowerCase().includes(sq)||(i.notes||'').toLowerCase().includes(sq))) return false;
+    if(navFilter==='week'&&i.priority!=='This Week') return false;
+    if(statusFilter&&i.status!==statusFilter) return false;
+    if(fp&&i.priority!==fp) return false;
+    if(fo&&i.owner!==fo) return false;
+    if(sq&&!((i.name||'').toLowerCase().includes(sq)||(i.parent||'').toLowerCase().includes(sq)||(i.notes||'').toLowerCase().includes(sq))) return false;
     return true;
   });
 }
@@ -354,8 +372,7 @@ function render(){
   renderStats();
   renderOwnerFilter();
   renderProgress();
-  const showFilters = ['table','kanban'].includes(view);
-  document.getElementById('filters-row').style.display = showFilters ? 'flex' : 'none';
+  document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
   if(view==='table') renderTable();
   else if(view==='kanban') renderKanban();
   else if(view==='bypage') renderByPage();
@@ -367,7 +384,7 @@ function renderStats(){
   STATUS_ORDER.forEach(s=>c[s]=0);
   items.forEach(i=>{if(c[i.status]!==undefined)c[i.status]++;});
   const pct=items.length?Math.round(c['Done']/items.length*100):0;
-  const statDefs=[
+  const defs=[
     {label:'Total',n:c.total,color:'var(--border2)',pct:100},
     {label:'Not started',n:c['Not Started'],color:'var(--c-ns-dot)',pct:c.total?c['Not Started']/c.total*100:0},
     {label:'Design',n:c['Design'],color:'var(--c-design-dot)',pct:c.total?c['Design']/c.total*100:0},
@@ -375,7 +392,7 @@ function renderStats(){
     {label:'Review',n:c['Review'],color:'var(--c-review-dot)',pct:c.total?c['Review']/c.total*100:0},
     {label:`Done · ${pct}%`,n:c['Done'],color:'var(--c-done-dot)',pct:pct},
   ];
-  document.getElementById('stats-row').innerHTML=statDefs.map(s=>`
+  document.getElementById('stats-row').innerHTML=defs.map(s=>`
     <div class="stat-card">
       <div class="stat-n" style="color:${s.color==='var(--border2)'?'var(--text)':s.color}">${s.n}</div>
       <div class="stat-l">${s.label}</div>
@@ -396,7 +413,6 @@ function renderOwnerFilter(){
   sel.innerHTML='<option value="">All owners</option>'+owners.map(o=>`<option value="${esc(o)}"${o===cur?' selected':''}>${esc(o)}</option>`).join('');
 }
 
-// ── Table view ──
 function renderTable(){
   const data=getFiltered();
   if(!data.length){renderEmpty();return;}
@@ -410,6 +426,7 @@ function renderTable(){
       <tbody>${data.map(tableRow).join('')}</tbody>
     </table></div>`;
 }
+
 function tableRow(i){
   const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
   const handoff=i.handoff?`<a href="${esc(i.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3);font-size:12px">—</span>';
@@ -424,7 +441,6 @@ function tableRow(i){
   </tr>`;
 }
 
-// ── Kanban view ──
 function renderKanban(){
   const data=getFiltered();
   document.getElementById('main-view').innerHTML=`<div class="kanban">${STATUS_ORDER.map(s=>{
@@ -438,6 +454,7 @@ function renderKanban(){
     </div>`;
   }).join('')}</div>`;
 }
+
 function kCard(i){
   const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
   return `<div class="k-card" onclick="openModal('${i.id}')">
@@ -451,54 +468,46 @@ function kCard(i){
   </div>`;
 }
 
-// ── By Page view ──
 function renderByPage(){
   const parents=[...new Set(items.map(i=>i.parent||'(No parent)'))].sort();
   if(!parents.length){renderEmpty();return;}
   document.getElementById('main-view').innerHTML=`<div class="group-grid">${parents.map(p=>groupCard(p,'page')).join('')}</div>`;
 }
 
-// ── By Owner view ──
 function renderByOwner(){
   const owners=[...new Set(items.map(i=>i.owner||'Unassigned'))].sort();
   if(!owners.length){renderEmpty();return;}
   document.getElementById('main-view').innerHTML=`<div class="group-grid">${owners.map(o=>groupCard(o,'owner')).join('')}</div>`;
 }
 
-function groupCard(groupKey, type){
-  const groupItems = type==='page'
-    ? items.filter(i=>(i.parent||'(No parent)')===groupKey)
-    : items.filter(i=>(i.owner||'Unassigned')===groupKey);
+function groupCard(groupKey,type){
+  const groupItems=type==='page'
+    ?items.filter(i=>(i.parent||'(No parent)')===groupKey)
+    :items.filter(i=>(i.owner||'Unassigned')===groupKey);
   const total=groupItems.length;
-  const counts={};
-  STATUS_ORDER.forEach(s=>counts[s]=0);
+  const counts={};STATUS_ORDER.forEach(s=>counts[s]=0);
   groupItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
   const donePct=total?Math.round(counts['Done']/total*100):0;
   const ini=groupKey.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-
   const segs=STATUS_ORDER.map(s=>{
     const w=total?counts[s]/total*100:0;
     return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:'';
   }).join('');
-
   const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>
-    `<span class="group-progress-label" style="--dot:${STATUS_COLOR[s]}" ><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`
+    `<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`
   ).join('');
-
   const rows=groupItems.map(i=>`
     <div class="group-row" onclick="openModal('${i.id}')">
       <span class="group-row-name">${esc(i.name)}</span>
       <span class="group-row-meta">
         <span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span>
         <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
-        ${type==='page' && i.owner?`<span class="owner-chip" title="${esc(i.owner)}">${i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</span>`:''}
+        ${type==='page'&&i.owner?`<span class="owner-chip" title="${esc(i.owner)}">${i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</span>`:''}
       </span>
     </div>`).join('');
-
-  const headerLeft = type==='owner'
-    ? `<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} page${total!==1?'s':''} · ${donePct}% done</div></div></div>`
-    : `<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} sub-page${total!==1?'s':''} · ${donePct}% done</div></div>`;
-
+  const headerLeft=type==='owner'
+    ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} page${total!==1?'s':''} · ${donePct}% done</div></div></div>`
+    :`<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} sub-page${total!==1?'s':''} · ${donePct}% done</div></div>`;
   return `<div class="group-card">
     <div class="group-card-header">${headerLeft}<span class="badge ${donePct===100?'s-done':'s-notstarted'}">${donePct}%</span></div>
     <div class="group-progress-wrap">
@@ -515,10 +524,7 @@ function renderEmpty(){
       <div class="empty-icon">📋</div>
       <h3>No pages yet</h3>
       <p>Add your first page to start tracking design handoffs, owners, and statuses.</p>
-      <button class="btn btn-dark" onclick="openModal()">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add first page
-      </button>
+      <button class="btn btn-dark" onclick="openModal()">Add first page</button>
     </div>`;
 }
 
@@ -556,7 +562,7 @@ function openModal(id){
 function closeModal(){document.getElementById('modal-bg').classList.remove('open');editingId=null;}
 function maybeClose(e){if(e.target===e.currentTarget)closeModal();}
 
-function saveItem(){
+async function saveItem(){
   const name=document.getElementById('f-name').value.trim();
   if(!name){document.getElementById('f-name').style.borderColor='#EF4444';document.getElementById('f-name').focus();return;}
   document.getElementById('f-name').style.borderColor='';
@@ -570,15 +576,36 @@ function saveItem(){
     notes:document.getElementById('f-notes').value.trim(),
     updated:Date.now()
   };
-  if(editingId){const idx=items.findIndex(i=>i.id===editingId);if(idx>-1)items[idx]=item;}
-  else items.unshift(item);
-  save();closeModal();render();
+  setSync('syncing','Saving…');
+  try{
+    if(editingId){
+      await dbFetch(`${API}?id=eq.${editingId}`,{method:'PATCH',body:JSON.stringify(item),headers:{...HEADERS,'Prefer':'return=minimal'}});
+      const idx=items.findIndex(i=>i.id===editingId);
+      if(idx>-1)items[idx]=item;
+    } else {
+      await dbFetch(API,{method:'POST',body:JSON.stringify(item),headers:{...HEADERS,'Prefer':'return=minimal'}});
+      items.unshift(item);
+    }
+    setSync('synced','Saved ✓');
+    closeModal();render();
+  }catch(e){
+    setSync('error','Save failed');
+    console.error(e);
+  }
 }
 
-function deleteItem(){
+async function deleteItem(){
   if(!editingId||!confirm('Delete this page? This cannot be undone.'))return;
-  items=items.filter(i=>i.id!==editingId);
-  save();closeModal();render();
+  setSync('syncing','Deleting…');
+  try{
+    await dbFetch(`${API}?id=eq.${editingId}`,{method:'DELETE',headers:{...HEADERS,'Prefer':'return=minimal'}});
+    items=items.filter(i=>i.id!==editingId);
+    setSync('synced','Deleted');
+    closeModal();render();
+  }catch(e){
+    setSync('error','Delete failed');
+    console.error(e);
+  }
 }
 
 function exportCSV(){
@@ -586,7 +613,7 @@ function exportCSV(){
   const rows=items.map(i=>[i.name,i.parent,i.status,i.priority,i.owner,i.handoff,i.notes].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([headers.join(','),...rows].join('\n'));
-  a.download='dashboard-tracker.csv';a.click();
+  a.download='jaba-ops-tracker.csv';a.click();
 }
 
 document.addEventListener('keydown',e=>{
