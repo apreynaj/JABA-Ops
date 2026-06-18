@@ -92,12 +92,13 @@ tbody tr{cursor:pointer}
 .kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
 .k-col{background:var(--surface2);border-radius:var(--radius-lg);padding:12px;min-height:160px}
 .k-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.k-col-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.k-col-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
 .k-col-count{font-size:11px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:1px 7px;color:var(--text2);font-weight:600}
 .k-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 12px;margin-bottom:7px;cursor:pointer;transition:box-shadow .1s,transform .1s}
 .k-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.07);transform:translateY(-1px)}
 .k-card:last-child{margin-bottom:0}
-.k-card-name{font-size:13px;font-weight:500;margin-bottom:3px;line-height:1.3}
+.k-card-name{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.3}
+.k-card-sub{font-size:11px;color:var(--text2);margin-bottom:2px}
 .k-card-parent{font-size:11px;color:var(--text3);margin-bottom:9px}
 .k-card-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
 .k-empty{text-align:center;padding:20px 0;font-size:12px;color:var(--text3)}
@@ -117,16 +118,18 @@ tbody tr{cursor:pointer}
 .group-row:last-child{border-bottom:none}
 .group-row:hover{background:var(--surface2)}
 .group-row-name{font-size:13px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.group-row-sub{font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
 .group-row-meta{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
+/* Modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:50;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius-lg);width:100%;max-width:540px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden}
+.modal{background:var(--surface);border-radius:var(--radius-lg);width:100%;max-width:580px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden}
 .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .modal-header h3{font-size:15px;font-weight:600}
 .modal-close{background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;border-radius:4px;display:flex}
 .modal-close:hover{background:var(--surface2);color:var(--text)}
-.modal-body{padding:20px 24px}
+.modal-body{padding:20px 24px;max-height:75vh;overflow-y:auto}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-full{grid-column:1/-1}
 .form-group{display:flex;flex-direction:column;gap:5px}
@@ -138,17 +141,48 @@ tbody tr{cursor:pointer}
 .btn-delete{color:#B91C1C;border-color:#FECACA;background:#FEF2F2;margin-right:auto}
 .btn-delete:hover{background:#FEE2E2}
 
+/* Parent dropdown combo */
+.combo-wrap{position:relative}
+.combo-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;font-size:13px;color:var(--text);font-family:var(--font)}
+.combo-input:focus{outline:2px solid var(--text);outline-offset:1px;background:var(--surface)}
+.combo-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:100;max-height:200px;overflow-y:auto;display:none}
+.combo-dropdown.open{display:block}
+.combo-option{padding:8px 12px;font-size:13px;cursor:pointer;color:var(--text)}
+.combo-option:hover{background:var(--surface2)}
+.combo-option.add-new{color:#1565A0;font-weight:500;border-top:1px solid var(--border)}
+
+/* Screenshots */
+.screenshots-section{margin-top:4px}
+.drop-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--text);background:var(--surface2)}
+.drop-zone p{font-size:13px;color:var(--text3);margin-top:6px}
+.drop-zone svg{color:var(--text3)}
+.screenshots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.screenshot-thumb{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:var(--surface2);border:1px solid var(--border)}
+.screenshot-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer}
+.screenshot-thumb .del-shot{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);border:none;border-radius:4px;padding:3px 5px;cursor:pointer;display:flex;align-items:center;color:#fff;opacity:0;transition:opacity .15s}
+.screenshot-thumb:hover .del-shot{opacity:1}
+.uploading-indicator{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;margin-top:8px}
+
+/* Lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain}
+.lightbox-close{position:fixed;top:20px;right:24px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+
+/* Sync */
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#9A9890;display:inline-block;margin-right:5px;transition:background .3s}
+.sync-dot.syncing{background:#F59E0B}
+.sync-dot.synced{background:#2E9550}
+.sync-dot.error{background:#EF4444}
+.sync-label{font-size:11px;color:var(--text3);display:flex;align-items:center}
+
 .empty-state{text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
 .empty-icon{font-size:36px;margin-bottom:12px}
 .empty-state h3{font-size:15px;font-weight:600;margin-bottom:6px}
 .empty-state p{font-size:13px;color:var(--text2);max-width:300px;margin:0 auto 16px;line-height:1.5}
 
-/* Sync indicator */
-.sync-dot{width:7px;height:7px;border-radius:50%;background:#9A9890;display:inline-block;margin-right:5px;transition:background .3s}
-.sync-dot.syncing{background:#F59E0B}
-.sync-dot.synced{background:#2E9550}
-.sync-dot.error{background:#EF4444}
-.sync-label{font-size:11px;color:var(--text3)}
+.divider{height:1px;background:var(--border);margin:16px 0}
 
 @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.sidebar{width:52px}.sidebar-logo h1,.sidebar-logo p,.nav-item span,.nav-label{display:none}.main{margin-left:52px}.stats{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}}
@@ -225,11 +259,11 @@ tbody tr{cursor:pointer}
       <span class="sync-label"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Loading…</span></span>
       <button class="btn" onclick="exportCSV()">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-        Export CSV
+        Export
       </button>
       <button class="btn btn-dark" onclick="openModal()">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Add page
+        Add entry
       </button>
     </div>
   </div>
@@ -239,7 +273,7 @@ tbody tr{cursor:pointer}
     <div class="filters" id="filters-row">
       <div class="search-wrap">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input class="search-input" id="search-input" placeholder="Search pages…" oninput="render()"/>
+        <input class="search-input" id="search-input" placeholder="Search…" oninput="render()"/>
       </div>
       <select class="filter-select" id="f-priority" onchange="render()">
         <option value="">All priorities</option>
@@ -253,24 +287,42 @@ tbody tr{cursor:pointer}
   </div>
 </div>
 
+<!-- Modal -->
 <div class="modal-bg" id="modal-bg" onclick="maybeClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <h3 id="modal-title">Add page</h3>
+      <h3 id="modal-title">Add entry</h3>
       <button class="modal-close" onclick="closeModal()">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
+
+        <!-- Parent page combo -->
         <div class="form-group form-full">
-          <label>Page name *</label>
-          <input id="f-name" placeholder="e.g. Analytics Overview"/>
+          <label>Parent page *</label>
+          <div class="combo-wrap">
+            <input class="combo-input" id="f-parent" placeholder="Select or type a parent page…" autocomplete="off"
+              oninput="filterCombo()" onfocus="openCombo()" onblur="blurCombo()"/>
+            <div class="combo-dropdown" id="combo-dropdown"></div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Parent page</label>
-          <input id="f-parent" placeholder="e.g. Reports"/>
+
+        <!-- Sub-page -->
+        <div class="form-group form-full">
+          <label>Sub-page *</label>
+          <input id="f-name" placeholder="e.g. User Profile Settings"/>
         </div>
+
+        <!-- Update needed -->
+        <div class="form-group form-full">
+          <label>Update needed</label>
+          <textarea id="f-notes" placeholder="Describe what needs to be done, known issues, light/dark specifics…"></textarea>
+        </div>
+
+        <div class="divider form-full"></div>
+
         <div class="form-group">
           <label>Owner</label>
           <input id="f-owner-input" placeholder="e.g. Maria"/>
@@ -288,14 +340,29 @@ tbody tr{cursor:pointer}
             <option>This Week</option><option>Next Week</option><option>On Hold</option>
           </select>
         </div>
-        <div class="form-group form-full">
-          <label>Handoff link (Claude Design URL)</label>
-          <input id="f-handoff" placeholder="https://claude.ai/design/…"/>
+        <div class="form-group">
+          <label>Handoff link</label>
+          <input id="f-handoff" placeholder="https://…"/>
         </div>
-        <div class="form-group form-full">
-          <label>Notes / description</label>
-          <textarea id="f-notes" placeholder="What needs to be done, known issues, light/dark specifics…"></textarea>
+
+        <div class="divider form-full"></div>
+
+        <!-- Screenshots -->
+        <div class="form-group form-full screenshots-section">
+          <label>Screenshots</label>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p>Click to upload or drag & drop screenshots</p>
+          </div>
+          <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="handleFiles(this.files)"/>
+          <div id="uploading-indicator" style="display:none" class="uploading-indicator">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            Uploading…
+          </div>
+          <div class="screenshots-grid" id="screenshots-grid"></div>
         </div>
+
       </div>
     </div>
     <div class="modal-footer">
@@ -309,11 +376,19 @@ tbody tr{cursor:pointer}
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="Screenshot"/>
+</div>
+
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
 <script>
-// ── Supabase config ──
 const SUPABASE_URL = 'https://eglsyodljsnwcdieatda.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnbHN5b2RsanNud2NkaWVhdGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MDQyMjYsImV4cCI6MjA5NzM4MDIyNn0.h9eHJ7qSze3dKYxoBLYyYoSVi9z6n5eMBqeejWvm95g';
 const API = `${SUPABASE_URL}/rest/v1/pages`;
+const STORAGE = `${SUPABASE_URL}/storage/v1`;
 const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`};
 
 const STATUS_ORDER = ['Not Started','Design','Development','Review','Done'];
@@ -324,15 +399,15 @@ const NAV_LABELS = {all:'All pages',week:'This week','s-notstarted':'Not started
 const STATUS_NAV = {'s-notstarted':'Not Started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
 
 let items=[], view='table', navFilter='all', editingId=null;
+let currentScreenshots=[]; // array of public URLs for current modal
+let parentPages=[]; // known parent pages
 
-function setSync(state, text){
-  const dot=document.getElementById('sync-dot');
-  const lbl=document.getElementById('sync-text');
-  dot.className='sync-dot '+state;
-  lbl.textContent=text;
+function setSync(state,text){
+  document.getElementById('sync-dot').className='sync-dot '+state;
+  document.getElementById('sync-text').textContent=text;
 }
 
-async function dbFetch(url, opts={}){
+async function dbFetch(url,opts={}){
   const r=await fetch(url,{headers:HEADERS,...opts});
   if(!r.ok) throw new Error(await r.text());
   return r.status===204?null:r.json();
@@ -342,6 +417,8 @@ async function load(){
   setSync('syncing','Loading…');
   try{
     items=await dbFetch(`${API}?order=updated.desc`);
+    // Also need screenshots column — add if missing
+    parentPages=[...new Set(items.map(i=>i.parent).filter(Boolean))].sort();
     setSync('synced','Synced');
     render();
   }catch(e){
@@ -353,6 +430,79 @@ async function load(){
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// ── Parent page combo ──
+let comboOpen=false;
+function openCombo(){
+  comboOpen=true;
+  renderCombo(document.getElementById('f-parent').value);
+  document.getElementById('combo-dropdown').classList.add('open');
+}
+function blurCombo(){setTimeout(()=>{document.getElementById('combo-dropdown').classList.remove('open');comboOpen=false;},200);}
+function filterCombo(){renderCombo(document.getElementById('f-parent').value);}
+function renderCombo(q){
+  const dd=document.getElementById('combo-dropdown');
+  const filtered=parentPages.filter(p=>p.toLowerCase().includes((q||'').toLowerCase()));
+  const showAdd=q&&!parentPages.find(p=>p.toLowerCase()===q.toLowerCase());
+  dd.innerHTML=filtered.map(p=>`<div class="combo-option" onmousedown="selectParent('${esc(p)}')">${esc(p)}</div>`).join('')
+    +(showAdd?`<div class="combo-option add-new" onmousedown="selectParent('${esc(q)}',true)">＋ Add "${esc(q)}"</div>`:'');
+  if(!filtered.length&&!showAdd) dd.innerHTML='<div class="combo-option" style="color:var(--text3);cursor:default">No matches — type to add new</div>';
+}
+function selectParent(val,isNew){
+  document.getElementById('f-parent').value=val;
+  if(isNew&&!parentPages.includes(val)){parentPages.push(val);parentPages.sort();}
+  document.getElementById('combo-dropdown').classList.remove('open');
+}
+
+// ── Screenshot upload ──
+function handleDragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('dragover');}
+function handleDragLeave(){document.getElementById('drop-zone').classList.remove('dragover');}
+function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('dragover');handleFiles(e.dataTransfer.files);}
+
+async function handleFiles(files){
+  const ind=document.getElementById('uploading-indicator');
+  ind.style.display='flex';
+  for(const file of files){
+    if(!file.type.startsWith('image/')) continue;
+    const ext=file.name.split('.').pop();
+    const path=`${uid()}.${ext}`;
+    try{
+      const r=await fetch(`${STORAGE}/object/screenshots/${path}`,{
+        method:'POST',
+        headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
+        body:file
+      });
+      if(!r.ok) throw new Error(await r.text());
+      const url=`${STORAGE}/object/public/screenshots/${path}`;
+      currentScreenshots.push(url);
+      renderScreenshots();
+    }catch(e){console.error('Upload failed',e);alert('Upload failed: '+e.message);}
+  }
+  ind.style.display='none';
+}
+
+function renderScreenshots(){
+  const grid=document.getElementById('screenshots-grid');
+  grid.innerHTML=currentScreenshots.map((url,i)=>`
+    <div class="screenshot-thumb">
+      <img src="${esc(url)}" alt="Screenshot ${i+1}" onclick="openLightbox('${esc(url)}')"/>
+      <button class="del-shot" onclick="removeScreenshot(${i})" title="Remove">
+        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('');
+}
+
+function removeScreenshot(i){
+  currentScreenshots.splice(i,1);
+  renderScreenshots();
+}
+
+function openLightbox(url){
+  document.getElementById('lightbox-img').src=url;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// ── Filtering ──
 function getFiltered(){
   const fp=document.getElementById('f-priority').value;
   const fo=document.getElementById('f-owner').value;
@@ -369,9 +519,7 @@ function getFiltered(){
 }
 
 function render(){
-  renderStats();
-  renderOwnerFilter();
-  renderProgress();
+  renderStats();renderOwnerFilter();renderProgress();
   document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
   if(view==='table') renderTable();
   else if(view==='kanban') renderKanban();
@@ -380,12 +528,11 @@ function render(){
 }
 
 function renderStats(){
-  const c={total:items.length};
-  STATUS_ORDER.forEach(s=>c[s]=0);
+  const c={total:items.length};STATUS_ORDER.forEach(s=>c[s]=0);
   items.forEach(i=>{if(c[i.status]!==undefined)c[i.status]++;});
   const pct=items.length?Math.round(c['Done']/items.length*100):0;
   const defs=[
-    {label:'Total',n:c.total,color:'var(--border2)',pct:100},
+    {label:'Total',n:c.total,color:'var(--text3)',pct:100},
     {label:'Not started',n:c['Not Started'],color:'var(--c-ns-dot)',pct:c.total?c['Not Started']/c.total*100:0},
     {label:'Design',n:c['Design'],color:'var(--c-design-dot)',pct:c.total?c['Design']/c.total*100:0},
     {label:'Development',n:c['Development'],color:'var(--c-dev-dot)',pct:c.total?c['Development']/c.total*100:0},
@@ -394,7 +541,7 @@ function renderStats(){
   ];
   document.getElementById('stats-row').innerHTML=defs.map(s=>`
     <div class="stat-card">
-      <div class="stat-n" style="color:${s.color==='var(--border2)'?'var(--text)':s.color}">${s.n}</div>
+      <div class="stat-n" style="color:${s.color}">${s.n}</div>
       <div class="stat-l">${s.label}</div>
       <div class="stat-bar"><div class="stat-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
     </div>`).join('');
@@ -407,8 +554,7 @@ function renderProgress(){
 }
 
 function renderOwnerFilter(){
-  const sel=document.getElementById('f-owner');
-  const cur=sel.value;
+  const sel=document.getElementById('f-owner');const cur=sel.value;
   const owners=[...new Set(items.map(i=>i.owner).filter(Boolean))].sort();
   sel.innerHTML='<option value="">All owners</option>'+owners.map(o=>`<option value="${esc(o)}"${o===cur?' selected':''}>${esc(o)}</option>`).join('');
 }
@@ -419,9 +565,14 @@ function renderTable(){
   document.getElementById('main-view').innerHTML=`
     <div class="tbl-wrap"><table>
       <thead><tr>
-        <th style="width:22%">Page</th><th style="width:12%">Parent</th>
-        <th style="width:14%">Status</th><th style="width:12%">Priority</th>
-        <th style="width:8%">Owner</th><th style="width:9%">Handoff</th><th>Notes</th>
+        <th style="width:15%">Parent page</th>
+        <th style="width:20%">Sub-page</th>
+        <th style="width:14%">Status</th>
+        <th style="width:12%">Priority</th>
+        <th style="width:7%">Owner</th>
+        <th style="width:7%">Handoff</th>
+        <th style="width:5%">📷</th>
+        <th>Update needed</th>
       </tr></thead>
       <tbody>${data.map(tableRow).join('')}</tbody>
     </table></div>`;
@@ -429,15 +580,18 @@ function renderTable(){
 
 function tableRow(i){
   const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
-  const handoff=i.handoff?`<a href="${esc(i.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3);font-size:12px">—</span>';
+  const handoff=i.handoff?`<a href="${esc(i.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3)">—</span>';
+  const shots=i.screenshots&&i.screenshots.length?`<span style="font-size:12px;color:var(--text2)">${i.screenshots.length}</span>`:'<span style="color:var(--text3)">—</span>';
   const notes=i.notes?`<span class="notes-cell" title="${esc(i.notes)}">${esc(i.notes)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
   return `<tr onclick="openModal('${i.id}')">
-    <td><span class="page-name">${esc(i.name)}</span></td>
     <td>${i.parent?`<span class="parent-tag">${esc(i.parent)}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
+    <td><span class="page-name">${esc(i.name)}</span></td>
     <td><span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span></td>
     <td><span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span></td>
     <td><span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span></td>
-    <td>${handoff}</td><td>${notes}</td>
+    <td>${handoff}</td>
+    <td>${shots}</td>
+    <td>${notes}</td>
   </tr>`;
 }
 
@@ -457,13 +611,13 @@ function renderKanban(){
 
 function kCard(i){
   const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
+  const shots=i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷 ${i.screenshots.length}</span>`:'';
   return `<div class="k-card" onclick="openModal('${i.id}')">
     <div class="k-card-name">${esc(i.name)}</div>
     <div class="k-card-parent">${esc(i.parent||'No parent')}</div>
     <div class="k-card-footer">
       <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
-      <span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span>
-      ${i.handoff?`<a href="${esc(i.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()" style="font-size:11px;padding:2px 6px"><svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`:''}
+      <div style="display:flex;align-items:center;gap:5px">${shots}<span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span></div>
     </div>
   </div>`;
 }
@@ -481,32 +635,29 @@ function renderByOwner(){
 }
 
 function groupCard(groupKey,type){
-  const groupItems=type==='page'
-    ?items.filter(i=>(i.parent||'(No parent)')===groupKey)
-    :items.filter(i=>(i.owner||'Unassigned')===groupKey);
+  const groupItems=type==='page'?items.filter(i=>(i.parent||'(No parent)')===groupKey):items.filter(i=>(i.owner||'Unassigned')===groupKey);
   const total=groupItems.length;
   const counts={};STATUS_ORDER.forEach(s=>counts[s]=0);
   groupItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
   const donePct=total?Math.round(counts['Done']/total*100):0;
   const ini=groupKey.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const segs=STATUS_ORDER.map(s=>{
-    const w=total?counts[s]/total*100:0;
-    return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:'';
-  }).join('');
-  const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>
-    `<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`
-  ).join('');
+  const segs=STATUS_ORDER.map(s=>{const w=total?counts[s]/total*100:0;return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:''}).join('');
+  const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>`<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`).join('');
   const rows=groupItems.map(i=>`
     <div class="group-row" onclick="openModal('${i.id}')">
-      <span class="group-row-name">${esc(i.name)}</span>
+      <div style="flex:1;min-width:0">
+        <div class="group-row-name">${esc(i.name)}</div>
+        ${type==='owner'&&i.parent?`<div style="font-size:11px;color:var(--text3)">${esc(i.parent)}</div>`:''}
+      </div>
       <span class="group-row-meta">
         <span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span>
         <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
         ${type==='page'&&i.owner?`<span class="owner-chip" title="${esc(i.owner)}">${i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</span>`:''}
+        ${i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷${i.screenshots.length}</span>`:''}
       </span>
     </div>`).join('');
   const headerLeft=type==='owner'
-    ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} page${total!==1?'s':''} · ${donePct}% done</div></div></div>`
+    ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} item${total!==1?'s':''} · ${donePct}% done</div></div></div>`
     :`<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} sub-page${total!==1?'s':''} · ${donePct}% done</div></div>`;
   return `<div class="group-card">
     <div class="group-card-header">${headerLeft}<span class="badge ${donePct===100?'s-done':'s-notstarted'}">${donePct}%</span></div>
@@ -522,9 +673,9 @@ function renderEmpty(){
   document.getElementById('main-view').innerHTML=`
     <div class="empty-state">
       <div class="empty-icon">📋</div>
-      <h3>No pages yet</h3>
-      <p>Add your first page to start tracking design handoffs, owners, and statuses.</p>
-      <button class="btn btn-dark" onclick="openModal()">Add first page</button>
+      <h3>No entries yet</h3>
+      <p>Add your first entry to start tracking design handoffs, owners, and statuses.</p>
+      <button class="btn btn-dark" onclick="openModal()">Add first entry</button>
     </div>`;
 }
 
@@ -546,81 +697,86 @@ function setView(v,el){
 function openModal(id){
   editingId=id||null;
   const m=id?items.find(i=>i.id===id):null;
-  document.getElementById('modal-title').textContent=m?'Edit page':'Add page';
-  document.getElementById('f-name').value=m?.name||'';
+  document.getElementById('modal-title').textContent=m?'Edit entry':'Add entry';
   document.getElementById('f-parent').value=m?.parent||'';
+  document.getElementById('f-name').value=m?.name||'';
+  document.getElementById('f-notes').value=m?.notes||'';
   document.getElementById('f-owner-input').value=m?.owner||'';
   document.getElementById('f-status').value=m?.status||'Not Started';
   document.getElementById('f-priority-input').value=m?.priority||'This Week';
   document.getElementById('f-handoff').value=m?.handoff||'';
-  document.getElementById('f-notes').value=m?.notes||'';
+  currentScreenshots=m?.screenshots?[...m.screenshots]:[];
+  renderScreenshots();
   document.getElementById('delete-btn').style.display=m?'inline-flex':'none';
   document.getElementById('modal-bg').classList.add('open');
-  setTimeout(()=>document.getElementById('f-name').focus(),50);
+  setTimeout(()=>document.getElementById('f-parent').focus(),50);
 }
 
-function closeModal(){document.getElementById('modal-bg').classList.remove('open');editingId=null;}
+function closeModal(){document.getElementById('modal-bg').classList.remove('open');editingId=null;currentScreenshots=[];}
 function maybeClose(e){if(e.target===e.currentTarget)closeModal();}
 
 async function saveItem(){
+  const parent=document.getElementById('f-parent').value.trim();
   const name=document.getElementById('f-name').value.trim();
+  if(!parent){document.getElementById('f-parent').style.borderColor='#EF4444';document.getElementById('f-parent').focus();return;}
   if(!name){document.getElementById('f-name').style.borderColor='#EF4444';document.getElementById('f-name').focus();return;}
+  document.getElementById('f-parent').style.borderColor='';
   document.getElementById('f-name').style.borderColor='';
+  if(!parentPages.includes(parent)){parentPages.push(parent);parentPages.sort();}
   const item={
-    id:editingId||uid(),name,
-    parent:document.getElementById('f-parent').value.trim(),
+    id:editingId||uid(),name,parent,
     owner:document.getElementById('f-owner-input').value.trim(),
     status:document.getElementById('f-status').value,
     priority:document.getElementById('f-priority-input').value,
     handoff:document.getElementById('f-handoff').value.trim(),
     notes:document.getElementById('f-notes').value.trim(),
+    screenshots:currentScreenshots,
     updated:Date.now()
   };
   setSync('syncing','Saving…');
   try{
     if(editingId){
       await dbFetch(`${API}?id=eq.${editingId}`,{method:'PATCH',body:JSON.stringify(item),headers:{...HEADERS,'Prefer':'return=minimal'}});
-      const idx=items.findIndex(i=>i.id===editingId);
-      if(idx>-1)items[idx]=item;
+      const idx=items.findIndex(i=>i.id===editingId);if(idx>-1)items[idx]=item;
     } else {
       await dbFetch(API,{method:'POST',body:JSON.stringify(item),headers:{...HEADERS,'Prefer':'return=minimal'}});
       items.unshift(item);
     }
-    setSync('synced','Saved ✓');
-    closeModal();render();
-  }catch(e){
-    setSync('error','Save failed');
-    console.error(e);
-  }
+    setSync('synced','Saved ✓');closeModal();render();
+  }catch(e){setSync('error','Save failed');console.error(e);}
 }
 
 async function deleteItem(){
-  if(!editingId||!confirm('Delete this page? This cannot be undone.'))return;
+  if(!editingId||!confirm('Delete this entry? This cannot be undone.'))return;
   setSync('syncing','Deleting…');
   try{
     await dbFetch(`${API}?id=eq.${editingId}`,{method:'DELETE',headers:{...HEADERS,'Prefer':'return=minimal'}});
     items=items.filter(i=>i.id!==editingId);
-    setSync('synced','Deleted');
-    closeModal();render();
-  }catch(e){
-    setSync('error','Delete failed');
-    console.error(e);
-  }
+    setSync('synced','Deleted');closeModal();render();
+  }catch(e){setSync('error','Delete failed');console.error(e);}
 }
 
 function exportCSV(){
-  const headers=['Page','Parent','Status','Priority','Owner','Handoff','Notes'];
-  const rows=items.map(i=>[i.name,i.parent,i.status,i.priority,i.owner,i.handoff,i.notes].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const headers=['Parent page','Sub-page','Status','Priority','Owner','Handoff','Screenshots','Update needed'];
+  const rows=items.map(i=>[i.parent,i.name,i.status,i.priority,i.owner,i.handoff,(i.screenshots||[]).length,i.notes].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','));
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([headers.join(','),...rows].join('\n'));
-  a.download='jaba-ops-tracker.csv';a.click();
+  a.download='jaba-ops.csv';a.click();
 }
 
 document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeLightbox()||closeModal();
   if(e.key==='n'&&!e.target.matches('input,select,textarea')&&!document.getElementById('modal-bg').classList.contains('open'))openModal();
-  if(e.key==='Escape')closeModal();
 });
 
+// Add screenshots column to DB if not exists (safe to run multiple times)
+async function ensureScreenshotsColumn(){
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec`,{method:'POST',headers:HEADERS,body:JSON.stringify({sql:"ALTER TABLE pages ADD COLUMN IF NOT EXISTS screenshots jsonb DEFAULT '[]';"})});
+  }catch(e){}
+}
+
+ensureScreenshotsColumn();
 load();
 </script>
 </body>
