@@ -202,6 +202,10 @@ tbody tr{cursor:pointer}
 .add-parent-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);font-family:var(--font)}
 .add-parent-row input:focus{outline:2px solid var(--text);outline-offset:1px}
 .empty-subpages{font-size:12px;color:var(--text3);padding:8px 0;font-style:italic}
+.hold-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;padding:4px 0}
+.hold-toggle input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#E88C00}
+.badge-hold{background:#FFF3E0;color:#A65A00;border:1px solid #F5D8A8;display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600}
+.card-hold-banner{background:#FFF8EC;border-bottom:1px solid #F5D8A8;padding:7px 16px;display:flex;align-items:center;gap:6px;font-size:12px;color:#A65A00;font-weight:500}
 .btn-ghost{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;border-radius:4px;display:flex;align-items:center}
 .btn-ghost:hover{color:#B91C1C;background:#FEF2F2}
 .btn-ghost-blue{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;border-radius:4px;display:flex;align-items:center}
@@ -413,7 +417,7 @@ const PRIORITY_CLASS= {'This Week':'p-week','Next Week':'p-next','On Hold':'p-ho
 const NAV_LABELS    = {all:'All pages',week:'This week',manage:'Manage pages','s-notstarted':'Not started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
 const STATUS_NAV    = {'s-notstarted':'Not Started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
 
-// pageStructure: { [parentName]: [subpage, subpage, ...] }
+// pageStructure: { [parentName]: { subpages: [], onHold: false } }
 let items=[], pageStructure={}, view='table', navFilter='all', editingId=null, currentScreenshots=[];
 
 function setSync(state,text){
@@ -442,6 +446,7 @@ async function bootstrap(){
       create policy if not exists "ps_update" on page_structure for update using (true);
       create policy if not exists "ps_delete" on page_structure for delete using (true);
       alter table pages add column if not exists screenshots jsonb default '[]';
+      alter table page_structure add column if not exists on_hold boolean default false;
     `}
   )}).catch(()=>{});
 }
@@ -456,7 +461,7 @@ async function load(){
     ]);
     items = pageData||[];
     pageStructure = {};
-    (structData||[]).forEach(row=>{ pageStructure[row.parent]=row.subpages||[]; });
+    (structData||[]).forEach(row=>{ pageStructure[row.parent]={subpages:row.subpages||[], onHold:row.on_hold||false}; });
     setSync('synced','Synced');
     render();
   }catch(e){
@@ -468,23 +473,23 @@ async function load(){
 }
 
 // ── Page structure CRUD ──
-async function saveStructure(parent, subpages){
-  // upsert by parent name
+async function saveStructure(parent, subpages, onHold){
+  if(onHold===undefined) onHold=pageStructure[parent]?.onHold||false;
   const existing = await dbFetch(`${STRUCT_API}?parent=eq.${encodeURIComponent(parent)}`);
   if(existing&&existing.length){
     await dbFetch(`${STRUCT_API}?parent=eq.${encodeURIComponent(parent)}`,{
       method:'PATCH',
-      body:JSON.stringify({subpages}),
+      body:JSON.stringify({subpages, on_hold:onHold}),
       headers:{...HEADERS,'Prefer':'return=minimal'}
     });
   } else {
     await dbFetch(STRUCT_API,{
       method:'POST',
-      body:JSON.stringify({parent,subpages}),
+      body:JSON.stringify({parent,subpages, on_hold:onHold}),
       headers:{...HEADERS,'Prefer':'return=minimal'}
     });
   }
-  pageStructure[parent]=subpages;
+  pageStructure[parent]={subpages, onHold};
 }
 
 async function deleteParent(parent){
@@ -504,11 +509,20 @@ function renderManagePages(){
 
   const parents=Object.keys(pageStructure).sort();
   const blocksHtml = parents.length ? parents.map(p=>{
-    const subs = pageStructure[p]||[];
-    return `<div class="parent-block" id="pb-${CSS.escape(p)}">
+    const data = pageStructure[p]||{subpages:[],onHold:false};
+    const subs = data.subpages||[];
+    const onHold = data.onHold||false;
+    return `<div class="parent-block" id="pb-${CSS.escape(p)}" style="${onHold?'opacity:0.75;':''}">
       <div class="parent-block-header">
-        <span class="parent-block-name">${esc(p)}</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="parent-block-name">${esc(p)}</span>
+          ${onHold?`<span class="badge-hold">⏸ On Hold</span>`:''}
+        </div>
         <div class="parent-block-actions">
+          <label class="hold-toggle" title="Toggle on hold">
+            <input type="checkbox" ${onHold?'checked':''} onchange="toggleParentHold('${esc(p)}')"/>
+            On hold
+          </label>
           <button class="btn-ghost" onclick="removeParent('${esc(p)}')" title="Delete parent page">
             <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
           </button>
@@ -554,7 +568,7 @@ async function addParent(){
   if(pageStructure[val]!==undefined){alert('That parent page already exists.');return;}
   setSync('syncing','Saving…');
   try{
-    await saveStructure(val,[]);
+    await saveStructure(val,[],false);
     setSync('synced','Saved ✓');
     inp.value='';
     renderManagePages();
@@ -565,7 +579,7 @@ async function addSubpage(parent){
   const inp=document.getElementById(`new-sub-${parent}`);
   const val=inp.value.trim();
   if(!val) return;
-  const subs=[...(pageStructure[parent]||[])];
+  const subs=[...(pageStructure[parent]?.subpages||[])];
   if(subs.includes(val)){alert('That sub-page already exists.');return;}
   subs.push(val);
   setSync('syncing','Saving…');
@@ -578,13 +592,24 @@ async function addSubpage(parent){
 }
 
 async function removeSubpage(parent,idx){
-  const subs=[...(pageStructure[parent]||[])];
+  const subs=[...(pageStructure[parent]?.subpages||[])];
   const name=subs[idx];
   if(!confirm(`Remove sub-page "${name}"?`)) return;
   subs.splice(idx,1);
   setSync('syncing','Saving…');
   try{
     await saveStructure(parent,subs);
+    setSync('synced','Saved ✓');
+    renderManagePages();
+  }catch(e){setSync('error','Save failed');console.error(e);}
+}
+
+async function toggleParentHold(parent){
+  const current=pageStructure[parent]?.onHold||false;
+  const subs=pageStructure[parent]?.subpages||[];
+  setSync('syncing','Saving…');
+  try{
+    await saveStructure(parent,subs,!current);
     setSync('synced','Saved ✓');
     renderManagePages();
   }catch(e){setSync('error','Save failed');console.error(e);}
@@ -616,7 +641,7 @@ function onParentChange(){
     subSel.disabled=true;
     return;
   }
-  const subs=pageStructure[parent]||[];
+  const subs=(pageStructure[parent]?.subpages)||[];
   if(!subs.length){
     subSel.innerHTML='<option value="">No sub-pages defined yet</option>';
     subSel.disabled=true;
@@ -708,13 +733,13 @@ async function handleFiles(files){
     const ext=file.name.split('.').pop();
     const path=`${uid()}.${ext}`;
     try{
-      const r=await fetch(`${STORAGE}/object/screenshots/${path}`,{
+      const r=await fetch(`${STORAGE}/object/Screenshots/${path}`,{
         method:'POST',
         headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
         body:file
       });
       if(!r.ok) throw new Error(await r.text());
-      currentScreenshots.push(`${STORAGE}/object/public/screenshots/${path}`);
+      currentScreenshots.push(`${STORAGE}/object/public/Screenshots/${path}`);
       renderScreenshots();
     }catch(e){alert('Upload failed: '+e.message);}
   }
@@ -849,6 +874,14 @@ function renderByPage(){
   // also include parents from items not in structure
   items.forEach(i=>{if(i.parent&&!parents.includes(i.parent))parents.push(i.parent);});
   if(!parents.length){renderEmpty();return;}
+  // Sort: active first, on hold last
+  parents.sort((a,b)=>{
+    const aHold=pageStructure[a]?.onHold||false;
+    const bHold=pageStructure[b]?.onHold||false;
+    if(aHold&&!bHold) return 1;
+    if(!aHold&&bHold) return -1;
+    return a.localeCompare(b);
+  });
   document.getElementById('main-view').innerHTML=`<div class="group-grid">${parents.map(p=>groupCard(p,'page')).join('')}</div>`;
 }
 
@@ -865,7 +898,8 @@ function groupCard(groupKey,type){
   groupItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
   const donePct=total?Math.round(counts['Done']/total*100):0;
   const ini=groupKey.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const segs=STATUS_ORDER.map(s=>{const w=total?counts[s]/total*100:0;return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:''}).join('');
+  const isOnHold=type==='page'&&(pageStructure[groupKey]?.onHold||false);
+  const segs=STATUS_ORDER.map(s=>{const w=total?counts[s]/total*100:0;return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}${isOnHold?';opacity:0.5':''}"></div>`:''}).join('');
   const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>`<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`).join('');
   const rows=groupItems.length?groupItems.map(i=>`
     <div class="group-row" onclick="openModal('${i.id}')">
@@ -882,9 +916,10 @@ function groupCard(groupKey,type){
     </div>`).join(''):'<div style="padding:12px 16px;font-size:12px;color:var(--text3)">No entries yet</div>';
   const headerLeft=type==='owner'
     ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} item${total!==1?'s':''} · ${donePct}% done</div></div></div>`
-    :`<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} entr${total!==1?'ies':'y'} · ${donePct}% done</div></div>`;
-  return `<div class="group-card">
+    :`<div style="display:flex;align-items:center;gap:10px"><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} entr${total!==1?'ies':'y'} · ${donePct}% done</div></div>${isOnHold?`<span class="badge-hold">⏸ On Hold</span>`:''}</div>`;
+  return `<div class="group-card"${isOnHold?' style="opacity:0.8"':''}>
     <div class="group-card-header">${headerLeft}<span class="badge ${donePct===100?'s-done':'s-notstarted'}">${donePct}%</span></div>
+    ${isOnHold?`<div class="card-hold-banner"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> This page is on hold — no active work assigned</div>`:''}
     <div class="group-progress-wrap">
       <div class="group-progress-track">${segs||`<div style="width:100%;height:100%;background:var(--surface2)"></div>`}</div>
       <div class="group-progress-labels">${labels||'<span style="font-size:11px;color:var(--text3)">No entries</span>'}</div>
