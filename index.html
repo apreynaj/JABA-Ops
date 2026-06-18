@@ -18,6 +18,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
 
+/* Sidebar */
 .sidebar{position:fixed;top:0;left:0;width:224px;height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;overflow-y:auto}
 .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
 .logo-mark{width:28px;height:28px;background:var(--text);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
@@ -35,6 +36,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .prog-track{height:4px;background:var(--surface2);border-radius:4px;overflow:hidden}
 .prog-fill{height:100%;background:var(--c-done-dot);border-radius:4px;transition:width .4s ease}
 
+/* Main */
 .main{margin-left:224px;min-height:100vh}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:5;gap:12px;flex-wrap:wrap}
 .topbar-left{display:flex;align-items:center;gap:12px}
@@ -47,8 +49,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn:hover{background:var(--surface2)}
 .btn-dark{background:var(--text);color:#fff;border-color:var(--text)}
 .btn-dark:hover{background:#333}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-icon{padding:5px 7px;border-radius:6px}
 .content{padding:24px 28px}
 
+/* Stats */
 .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px}
 .stat-n{font-size:24px;font-weight:600;letter-spacing:-1px;line-height:1}
@@ -56,6 +61,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .stat-bar{height:2px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
 .stat-bar-fill{height:100%;border-radius:2px;transition:width .3s}
 
+/* Filters */
 .filters{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .filter-select{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;font-size:12px;color:var(--text);font-family:var(--font);cursor:pointer}
 .search-wrap{position:relative;flex:1;max-width:260px}
@@ -63,6 +69,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .search-input{width:100%;padding:6px 10px 6px 30px;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;font-family:var(--font);background:var(--surface);color:var(--text)}
 .search-input:focus,.filter-select:focus{outline:2px solid var(--text);outline-offset:1px}
 
+/* Badges */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:500;white-space:nowrap}
 .badge::before{content:'';width:5px;height:5px;border-radius:50%;display:inline-block}
 .s-notstarted{background:var(--c-ns-bg);color:var(--c-ns-fg)}.s-notstarted::before{background:var(--c-ns-dot)}
@@ -77,6 +84,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .link-btn{display:inline-flex;align-items:center;gap:4px;color:#1565A0;font-size:12px;font-weight:500;text-decoration:none;padding:3px 8px;border-radius:5px;background:#E8F4FD}
 .link-btn:hover{background:#D0E8F8}
 
+/* Table */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 table{width:100%;border-collapse:collapse}
 thead{background:var(--surface2)}
@@ -89,6 +97,7 @@ tbody tr{cursor:pointer}
 .parent-tag{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 7px;border-radius:4px;display:inline-block}
 .notes-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text2)}
 
+/* Kanban */
 .kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:start}
 .k-col{background:var(--surface2);border-radius:var(--radius-lg);padding:12px;min-height:160px}
 .k-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -98,11 +107,11 @@ tbody tr{cursor:pointer}
 .k-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.07);transform:translateY(-1px)}
 .k-card:last-child{margin-bottom:0}
 .k-card-name{font-size:13px;font-weight:500;margin-bottom:2px;line-height:1.3}
-.k-card-sub{font-size:11px;color:var(--text2);margin-bottom:2px}
 .k-card-parent{font-size:11px;color:var(--text3);margin-bottom:9px}
 .k-card-footer{display:flex;align-items:center;justify-content:space-between;gap:4px}
 .k-empty{text-align:center;padding:20px 0;font-size:12px;color:var(--text3)}
 
+/* Group views */
 .group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
 .group-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 .group-card-header{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
@@ -118,10 +127,9 @@ tbody tr{cursor:pointer}
 .group-row:last-child{border-bottom:none}
 .group-row:hover{background:var(--surface2)}
 .group-row-name{font-size:13px;font-weight:500;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.group-row-sub{font-size:11px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
 .group-row-meta{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
-/* Modal */
+/* Modals */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:50;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
 .modal-bg.open{display:flex}
 .modal{background:var(--surface);border-radius:var(--radius-lg);width:100%;max-width:580px;box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden}
@@ -135,37 +143,28 @@ tbody tr{cursor:pointer}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
 .form-group input,.form-group select,.form-group textarea{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;font-size:13px;color:var(--text);font-family:var(--font);width:100%}
+.form-group select:disabled{color:var(--text3);cursor:not-allowed}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid var(--text);outline-offset:1px;background:var(--surface)}
 .form-group textarea{resize:vertical;min-height:80px;line-height:1.5}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:8px}
 .btn-delete{color:#B91C1C;border-color:#FECACA;background:#FEF2F2;margin-right:auto}
 .btn-delete:hover{background:#FEE2E2}
-
-/* Parent dropdown combo */
-.combo-wrap{position:relative}
-.combo-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;font-size:13px;color:var(--text);font-family:var(--font)}
-.combo-input:focus{outline:2px solid var(--text);outline-offset:1px;background:var(--surface)}
-.combo-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:100;max-height:200px;overflow-y:auto;display:none}
-.combo-dropdown.open{display:block}
-.combo-option{padding:8px 12px;font-size:13px;cursor:pointer;color:var(--text)}
-.combo-option:hover{background:var(--surface2)}
-.combo-option.add-new{color:#1565A0;font-weight:500;border-top:1px solid var(--border)}
+.divider{height:1px;background:var(--border);margin:4px 0}
 
 /* Screenshots */
-.screenshots-section{margin-top:4px}
-.drop-zone{border:1.5px dashed var(--border2);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
+.drop-zone{border:1.5px dashed var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--text);background:var(--surface2)}
 .drop-zone p{font-size:13px;color:var(--text3);margin-top:6px}
 .drop-zone svg{color:var(--text3)}
 .screenshots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .screenshot-thumb{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/9;background:var(--surface2);border:1px solid var(--border)}
 .screenshot-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer}
-.screenshot-thumb .del-shot{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);border:none;border-radius:4px;padding:3px 5px;cursor:pointer;display:flex;align-items:center;color:#fff;opacity:0;transition:opacity .15s}
+.del-shot{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);border:none;border-radius:4px;padding:3px 5px;cursor:pointer;display:flex;align-items:center;color:#fff;opacity:0;transition:opacity .15s}
 .screenshot-thumb:hover .del-shot{opacity:1}
 .uploading-indicator{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;margin-top:8px}
 
 /* Lightbox */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:20px}
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;padding:20px}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:90vh;border-radius:8px;object-fit:contain}
 .lightbox-close{position:fixed;top:20px;right:24px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1}
@@ -177,13 +176,37 @@ tbody tr{cursor:pointer}
 .sync-dot.error{background:#EF4444}
 .sync-label{font-size:11px;color:var(--text3);display:flex;align-items:center}
 
+/* Empty */
 .empty-state{text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
 .empty-icon{font-size:36px;margin-bottom:12px}
 .empty-state h3{font-size:15px;font-weight:600;margin-bottom:6px}
-.empty-state p{font-size:13px;color:var(--text2);max-width:300px;margin:0 auto 16px;line-height:1.5}
+.empty-state p{font-size:13px;color:var(--text2);max-width:320px;margin:0 auto 16px;line-height:1.5}
 
-.divider{height:1px;background:var(--border);margin:16px 0}
+/* ── Manage Pages panel ── */
+.manage-wrap{max-width:680px}
+.manage-section-title{font-size:15px;font-weight:600;margin-bottom:4px;letter-spacing:-0.2px}
+.manage-section-sub{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.parent-list{display:flex;flex-direction:column;gap:12px}
+.parent-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.parent-block-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.parent-block-name{font-size:13px;font-weight:600;color:var(--text)}
+.parent-block-actions{display:flex;gap:6px}
+.subpage-list{padding:8px 16px 12px}
+.subpage-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text)}
+.subpage-row:last-child{border-bottom:none}
+.subpage-row-name{flex:1}
+.add-subpage-row{display:flex;gap:8px;margin-top:10px}
+.add-subpage-row input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:7px 10px;font-size:13px;color:var(--text);font-family:var(--font)}
+.add-subpage-row input:focus{outline:2px solid var(--text);outline-offset:1px;background:var(--surface)}
+.add-parent-row{display:flex;gap:8px;margin-top:16px}
+.add-parent-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);font-family:var(--font)}
+.add-parent-row input:focus{outline:2px solid var(--text);outline-offset:1px}
+.empty-subpages{font-size:12px;color:var(--text3);padding:8px 0;font-style:italic}
+.btn-ghost{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;border-radius:4px;display:flex;align-items:center}
+.btn-ghost:hover{color:#B91C1C;background:#FEF2F2}
+.btn-ghost-blue{background:none;border:none;cursor:pointer;color:var(--text3);padding:3px;border-radius:4px;display:flex;align-items:center}
 
+@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.kanban{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){.sidebar{width:52px}.sidebar-logo h1,.sidebar-logo p,.nav-item span,.nav-label{display:none}.main{margin-left:52px}.stats{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.content{padding:16px}.topbar{padding:12px 16px}.kanban{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.group-grid{grid-template-columns:1fr}}
@@ -225,6 +248,11 @@ tbody tr{cursor:pointer}
     <button class="nav-item" onclick="switchNav('s-done',this)">
       <span class="nav-dot" style="background:var(--c-done-dot)"></span><span>Done</span>
     </button>
+    <div class="nav-label">Settings</div>
+    <button class="nav-item" onclick="switchNav('manage',this)">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg>
+      <span>Manage pages</span>
+    </button>
   </nav>
   <div class="sidebar-footer">
     <div class="prog-label"><span>Overall done</span><span id="prog-pct">0%</span></div>
@@ -236,7 +264,7 @@ tbody tr{cursor:pointer}
   <div class="topbar">
     <div class="topbar-left">
       <h2 id="page-title">All pages</h2>
-      <div class="view-toggle">
+      <div class="view-toggle" id="view-toggle">
         <button class="vt-btn active" onclick="setView('table',this)">
           <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
           Table
@@ -257,11 +285,11 @@ tbody tr{cursor:pointer}
     </div>
     <div class="topbar-right">
       <span class="sync-label"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Loading…</span></span>
-      <button class="btn" onclick="exportCSV()">
+      <button class="btn" onclick="exportCSV()" id="btn-export">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         Export
       </button>
-      <button class="btn btn-dark" onclick="openModal()">
+      <button class="btn btn-dark" onclick="openModal()" id="btn-add">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add entry
       </button>
@@ -287,7 +315,7 @@ tbody tr{cursor:pointer}
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Entry Modal -->
 <div class="modal-bg" id="modal-bg" onclick="maybeClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -298,31 +326,23 @@ tbody tr{cursor:pointer}
     </div>
     <div class="modal-body">
       <div class="form-grid">
-
-        <!-- Parent page combo -->
         <div class="form-group form-full">
           <label>Parent page *</label>
-          <div class="combo-wrap">
-            <input class="combo-input" id="f-parent" placeholder="Select or type a parent page…" autocomplete="off"
-              oninput="filterCombo()" onfocus="openCombo()" onblur="blurCombo()"/>
-            <div class="combo-dropdown" id="combo-dropdown"></div>
-          </div>
+          <select id="f-parent" onchange="onParentChange()">
+            <option value="">— Select a parent page —</option>
+          </select>
         </div>
-
-        <!-- Sub-page -->
         <div class="form-group form-full">
           <label>Sub-page *</label>
-          <input id="f-name" placeholder="e.g. User Profile Settings"/>
+          <select id="f-name" disabled>
+            <option value="">— Select parent page first —</option>
+          </select>
         </div>
-
-        <!-- Update needed -->
         <div class="form-group form-full">
           <label>Update needed</label>
           <textarea id="f-notes" placeholder="Describe what needs to be done, known issues, light/dark specifics…"></textarea>
         </div>
-
         <div class="divider form-full"></div>
-
         <div class="form-group">
           <label>Owner</label>
           <input id="f-owner-input" placeholder="e.g. Maria"/>
@@ -344,14 +364,11 @@ tbody tr{cursor:pointer}
           <label>Handoff link</label>
           <input id="f-handoff" placeholder="https://…"/>
         </div>
-
         <div class="divider form-full"></div>
-
-        <!-- Screenshots -->
-        <div class="form-group form-full screenshots-section">
+        <div class="form-group form-full">
           <label>Screenshots</label>
           <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()"
-            ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            ondragover="handleDragOver(event)" ondragleave="handleDragLeave()" ondrop="handleDrop(event)">
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             <p>Click to upload or drag & drop screenshots</p>
           </div>
@@ -362,7 +379,6 @@ tbody tr{cursor:pointer}
           </div>
           <div class="screenshots-grid" id="screenshots-grid"></div>
         </div>
-
       </div>
     </div>
     <div class="modal-footer">
@@ -378,328 +394,251 @@ tbody tr{cursor:pointer}
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-close">×</button>
   <img id="lightbox-img" src="" alt="Screenshot"/>
 </div>
-
-<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <script>
 const SUPABASE_URL = 'https://eglsyodljsnwcdieatda.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVnbHN5b2RsanNud2NkaWVhdGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MDQyMjYsImV4cCI6MjA5NzM4MDIyNn0.h9eHJ7qSze3dKYxoBLYyYoSVi9z6n5eMBqeejWvm95g';
-const API = `${SUPABASE_URL}/rest/v1/pages`;
-const STORAGE = `${SUPABASE_URL}/storage/v1`;
-const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`};
+const API       = `${SUPABASE_URL}/rest/v1/pages`;
+const STRUCT_API= `${SUPABASE_URL}/rest/v1/page_structure`;
+const STORAGE   = `${SUPABASE_URL}/storage/v1`;
+const HEADERS   = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`};
 
-const STATUS_ORDER = ['Not Started','Design','Development','Review','Done'];
-const STATUS_CLASS = {'Not Started':'s-notstarted','Design':'s-design','Development':'s-dev','Review':'s-review','Done':'s-done'};
-const STATUS_COLOR = {'Not Started':'var(--c-ns-dot)','Design':'var(--c-design-dot)','Development':'var(--c-dev-dot)','Review':'var(--c-review-dot)','Done':'var(--c-done-dot)'};
-const PRIORITY_CLASS = {'This Week':'p-week','Next Week':'p-next','On Hold':'p-hold'};
-const NAV_LABELS = {all:'All pages',week:'This week','s-notstarted':'Not started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
-const STATUS_NAV = {'s-notstarted':'Not Started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
+const STATUS_ORDER  = ['Not Started','Design','Development','Review','Done'];
+const STATUS_CLASS  = {'Not Started':'s-notstarted','Design':'s-design','Development':'s-dev','Review':'s-review','Done':'s-done'};
+const STATUS_COLOR  = {'Not Started':'var(--c-ns-dot)','Design':'var(--c-design-dot)','Development':'var(--c-dev-dot)','Review':'var(--c-review-dot)','Done':'var(--c-done-dot)'};
+const PRIORITY_CLASS= {'This Week':'p-week','Next Week':'p-next','On Hold':'p-hold'};
+const NAV_LABELS    = {all:'All pages',week:'This week',manage:'Manage pages','s-notstarted':'Not started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
+const STATUS_NAV    = {'s-notstarted':'Not Started','s-design':'Design','s-dev':'Development','s-review':'Review','s-done':'Done'};
 
-let items=[], view='table', navFilter='all', editingId=null;
-let currentScreenshots=[]; // array of public URLs for current modal
-let parentPages=[]; // known parent pages
+// pageStructure: { [parentName]: [subpage, subpage, ...] }
+let items=[], pageStructure={}, view='table', navFilter='all', editingId=null, currentScreenshots=[];
 
 function setSync(state,text){
   document.getElementById('sync-dot').className='sync-dot '+state;
   document.getElementById('sync-text').textContent=text;
 }
-
 async function dbFetch(url,opts={}){
   const r=await fetch(url,{headers:HEADERS,...opts});
   if(!r.ok) throw new Error(await r.text());
   return r.status===204?null:r.json();
 }
 
+// ── Bootstrap: create tables if missing ──
+async function bootstrap(){
+  // page_structure table
+  await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec`,{method:'POST',headers:HEADERS,
+    body:JSON.stringify({sql:`
+      create table if not exists page_structure (
+        id serial primary key,
+        parent text not null,
+        subpages jsonb not null default '[]'
+      );
+      alter table page_structure enable row level security;
+      create policy if not exists "ps_select" on page_structure for select using (true);
+      create policy if not exists "ps_insert" on page_structure for insert with check (true);
+      create policy if not exists "ps_update" on page_structure for update using (true);
+      create policy if not exists "ps_delete" on page_structure for delete using (true);
+      alter table pages add column if not exists screenshots jsonb default '[]';
+    `}
+  )}).catch(()=>{});
+}
+
 async function load(){
   setSync('syncing','Loading…');
   try{
-    items=await dbFetch(`${API}?order=updated.desc`);
-    // Also need screenshots column — add if missing
-    parentPages=[...new Set(items.map(i=>i.parent).filter(Boolean))].sort();
+    await bootstrap();
+    const [pageData, structData] = await Promise.all([
+      dbFetch(`${API}?order=updated.desc`),
+      dbFetch(`${STRUCT_API}?order=parent.asc`)
+    ]);
+    items = pageData||[];
+    pageStructure = {};
+    (structData||[]).forEach(row=>{ pageStructure[row.parent]=row.subpages||[]; });
     setSync('synced','Synced');
     render();
   }catch(e){
     setSync('error','Error loading');
     console.error(e);
+    // fallback: load items only
+    try{ items=await dbFetch(`${API}?order=updated.desc`); render(); }catch(e2){}
   }
 }
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-
-// ── Parent page combo ──
-let comboOpen=false;
-function openCombo(){
-  comboOpen=true;
-  renderCombo(document.getElementById('f-parent').value);
-  document.getElementById('combo-dropdown').classList.add('open');
-}
-function blurCombo(){setTimeout(()=>{document.getElementById('combo-dropdown').classList.remove('open');comboOpen=false;},200);}
-function filterCombo(){renderCombo(document.getElementById('f-parent').value);}
-function renderCombo(q){
-  const dd=document.getElementById('combo-dropdown');
-  const filtered=parentPages.filter(p=>p.toLowerCase().includes((q||'').toLowerCase()));
-  const showAdd=q&&!parentPages.find(p=>p.toLowerCase()===q.toLowerCase());
-  dd.innerHTML=filtered.map(p=>`<div class="combo-option" onmousedown="selectParent('${esc(p)}')">${esc(p)}</div>`).join('')
-    +(showAdd?`<div class="combo-option add-new" onmousedown="selectParent('${esc(q)}',true)">＋ Add "${esc(q)}"</div>`:'');
-  if(!filtered.length&&!showAdd) dd.innerHTML='<div class="combo-option" style="color:var(--text3);cursor:default">No matches — type to add new</div>';
-}
-function selectParent(val,isNew){
-  document.getElementById('f-parent').value=val;
-  if(isNew&&!parentPages.includes(val)){parentPages.push(val);parentPages.sort();}
-  document.getElementById('combo-dropdown').classList.remove('open');
-}
-
-// ── Screenshot upload ──
-function handleDragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('dragover');}
-function handleDragLeave(){document.getElementById('drop-zone').classList.remove('dragover');}
-function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('dragover');handleFiles(e.dataTransfer.files);}
-
-async function handleFiles(files){
-  const ind=document.getElementById('uploading-indicator');
-  ind.style.display='flex';
-  for(const file of files){
-    if(!file.type.startsWith('image/')) continue;
-    const ext=file.name.split('.').pop();
-    const path=`${uid()}.${ext}`;
-    try{
-      const r=await fetch(`${STORAGE}/object/screenshots/${path}`,{
-        method:'POST',
-        headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
-        body:file
-      });
-      if(!r.ok) throw new Error(await r.text());
-      const url=`${STORAGE}/object/public/screenshots/${path}`;
-      currentScreenshots.push(url);
-      renderScreenshots();
-    }catch(e){console.error('Upload failed',e);alert('Upload failed: '+e.message);}
+// ── Page structure CRUD ──
+async function saveStructure(parent, subpages){
+  // upsert by parent name
+  const existing = await dbFetch(`${STRUCT_API}?parent=eq.${encodeURIComponent(parent)}`);
+  if(existing&&existing.length){
+    await dbFetch(`${STRUCT_API}?parent=eq.${encodeURIComponent(parent)}`,{
+      method:'PATCH',
+      body:JSON.stringify({subpages}),
+      headers:{...HEADERS,'Prefer':'return=minimal'}
+    });
+  } else {
+    await dbFetch(STRUCT_API,{
+      method:'POST',
+      body:JSON.stringify({parent,subpages}),
+      headers:{...HEADERS,'Prefer':'return=minimal'}
+    });
   }
-  ind.style.display='none';
+  pageStructure[parent]=subpages;
 }
 
-function renderScreenshots(){
-  const grid=document.getElementById('screenshots-grid');
-  grid.innerHTML=currentScreenshots.map((url,i)=>`
-    <div class="screenshot-thumb">
-      <img src="${esc(url)}" alt="Screenshot ${i+1}" onclick="openLightbox('${esc(url)}')"/>
-      <button class="del-shot" onclick="removeScreenshot(${i})" title="Remove">
-        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>`).join('');
-}
-
-function removeScreenshot(i){
-  currentScreenshots.splice(i,1);
-  renderScreenshots();
-}
-
-function openLightbox(url){
-  document.getElementById('lightbox-img').src=url;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
-
-// ── Filtering ──
-function getFiltered(){
-  const fp=document.getElementById('f-priority').value;
-  const fo=document.getElementById('f-owner').value;
-  const sq=(document.getElementById('search-input').value||'').toLowerCase();
-  const statusFilter=STATUS_NAV[navFilter];
-  return items.filter(i=>{
-    if(navFilter==='week'&&i.priority!=='This Week') return false;
-    if(statusFilter&&i.status!==statusFilter) return false;
-    if(fp&&i.priority!==fp) return false;
-    if(fo&&i.owner!==fo) return false;
-    if(sq&&!((i.name||'').toLowerCase().includes(sq)||(i.parent||'').toLowerCase().includes(sq)||(i.notes||'').toLowerCase().includes(sq))) return false;
-    return true;
+async function deleteParent(parent){
+  await dbFetch(`${STRUCT_API}?parent=eq.${encodeURIComponent(parent)}`,{
+    method:'DELETE',headers:{...HEADERS,'Prefer':'return=minimal'}
   });
+  delete pageStructure[parent];
 }
 
-function render(){
-  renderStats();renderOwnerFilter();renderProgress();
-  document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
-  if(view==='table') renderTable();
-  else if(view==='kanban') renderKanban();
-  else if(view==='bypage') renderByPage();
-  else if(view==='byowner') renderByOwner();
-}
+// ── Manage pages view ──
+function renderManagePages(){
+  document.getElementById('filters-row').style.display='none';
+  document.getElementById('stats-row').style.display='none';
+  document.getElementById('view-toggle').style.display='none';
+  document.getElementById('btn-add').style.display='none';
+  document.getElementById('btn-export').style.display='none';
 
-function renderStats(){
-  const c={total:items.length};STATUS_ORDER.forEach(s=>c[s]=0);
-  items.forEach(i=>{if(c[i.status]!==undefined)c[i.status]++;});
-  const pct=items.length?Math.round(c['Done']/items.length*100):0;
-  const defs=[
-    {label:'Total',n:c.total,color:'var(--text3)',pct:100},
-    {label:'Not started',n:c['Not Started'],color:'var(--c-ns-dot)',pct:c.total?c['Not Started']/c.total*100:0},
-    {label:'Design',n:c['Design'],color:'var(--c-design-dot)',pct:c.total?c['Design']/c.total*100:0},
-    {label:'Development',n:c['Development'],color:'var(--c-dev-dot)',pct:c.total?c['Development']/c.total*100:0},
-    {label:'Review',n:c['Review'],color:'var(--c-review-dot)',pct:c.total?c['Review']/c.total*100:0},
-    {label:`Done · ${pct}%`,n:c['Done'],color:'var(--c-done-dot)',pct:pct},
-  ];
-  document.getElementById('stats-row').innerHTML=defs.map(s=>`
-    <div class="stat-card">
-      <div class="stat-n" style="color:${s.color}">${s.n}</div>
-      <div class="stat-l">${s.label}</div>
-      <div class="stat-bar"><div class="stat-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div>
-    </div>`).join('');
-}
-
-function renderProgress(){
-  const pct=items.length?Math.round(items.filter(i=>i.status==='Done').length/items.length*100):0;
-  document.getElementById('prog-pct').textContent=pct+'%';
-  document.getElementById('prog-fill').style.width=pct+'%';
-}
-
-function renderOwnerFilter(){
-  const sel=document.getElementById('f-owner');const cur=sel.value;
-  const owners=[...new Set(items.map(i=>i.owner).filter(Boolean))].sort();
-  sel.innerHTML='<option value="">All owners</option>'+owners.map(o=>`<option value="${esc(o)}"${o===cur?' selected':''}>${esc(o)}</option>`).join('');
-}
-
-function renderTable(){
-  const data=getFiltered();
-  if(!data.length){renderEmpty();return;}
-  document.getElementById('main-view').innerHTML=`
-    <div class="tbl-wrap"><table>
-      <thead><tr>
-        <th style="width:15%">Parent page</th>
-        <th style="width:20%">Sub-page</th>
-        <th style="width:14%">Status</th>
-        <th style="width:12%">Priority</th>
-        <th style="width:7%">Owner</th>
-        <th style="width:7%">Handoff</th>
-        <th style="width:5%">📷</th>
-        <th>Update needed</th>
-      </tr></thead>
-      <tbody>${data.map(tableRow).join('')}</tbody>
-    </table></div>`;
-}
-
-function tableRow(i){
-  const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
-  const handoff=i.handoff?`<a href="${esc(i.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3)">—</span>';
-  const shots=i.screenshots&&i.screenshots.length?`<span style="font-size:12px;color:var(--text2)">${i.screenshots.length}</span>`:'<span style="color:var(--text3)">—</span>';
-  const notes=i.notes?`<span class="notes-cell" title="${esc(i.notes)}">${esc(i.notes)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
-  return `<tr onclick="openModal('${i.id}')">
-    <td>${i.parent?`<span class="parent-tag">${esc(i.parent)}</span>`:'<span style="color:var(--text3)">—</span>'}</td>
-    <td><span class="page-name">${esc(i.name)}</span></td>
-    <td><span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span></td>
-    <td><span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span></td>
-    <td><span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span></td>
-    <td>${handoff}</td>
-    <td>${shots}</td>
-    <td>${notes}</td>
-  </tr>`;
-}
-
-function renderKanban(){
-  const data=getFiltered();
-  document.getElementById('main-view').innerHTML=`<div class="kanban">${STATUS_ORDER.map(s=>{
-    const col=data.filter(i=>i.status===s);
-    return `<div class="k-col">
-      <div class="k-col-header">
-        <span class="k-col-label" style="color:${STATUS_COLOR[s]}">${esc(s)}</span>
-        <span class="k-col-count">${col.length}</span>
+  const parents=Object.keys(pageStructure).sort();
+  const blocksHtml = parents.length ? parents.map(p=>{
+    const subs = pageStructure[p]||[];
+    return `<div class="parent-block" id="pb-${CSS.escape(p)}">
+      <div class="parent-block-header">
+        <span class="parent-block-name">${esc(p)}</span>
+        <div class="parent-block-actions">
+          <button class="btn-ghost" onclick="removeParent('${esc(p)}')" title="Delete parent page">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          </button>
+        </div>
       </div>
-      ${col.length?col.map(kCard).join(''):'<div class="k-empty">Nothing here</div>'}
+      <div class="subpage-list">
+        ${subs.length
+          ? subs.map((s,i)=>`<div class="subpage-row">
+              <span class="subpage-row-name">${esc(s)}</span>
+              <button class="btn-ghost" onclick="removeSubpage('${esc(p)}',${i})" title="Remove sub-page">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>`).join('')
+          : '<div class="empty-subpages">No sub-pages yet — add one below</div>'
+        }
+        <div class="add-subpage-row">
+          <input id="new-sub-${esc(p)}" placeholder="Add sub-page…" onkeydown="if(event.key==='Enter')addSubpage('${esc(p)}')"/>
+          <button class="btn btn-sm btn-dark" onclick="addSubpage('${esc(p)}')">Add</button>
+        </div>
+      </div>
     </div>`;
-  }).join('')}</div>`;
-}
+  }).join('') : '<p style="font-size:13px;color:var(--text3)">No parent pages yet. Add one below.</p>';
 
-function kCard(i){
-  const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
-  const shots=i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷 ${i.screenshots.length}</span>`:'';
-  return `<div class="k-card" onclick="openModal('${i.id}')">
-    <div class="k-card-name">${esc(i.name)}</div>
-    <div class="k-card-parent">${esc(i.parent||'No parent')}</div>
-    <div class="k-card-footer">
-      <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
-      <div style="display:flex;align-items:center;gap:5px">${shots}<span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span></div>
-    </div>
-  </div>`;
-}
-
-function renderByPage(){
-  const parents=[...new Set(items.map(i=>i.parent||'(No parent)'))].sort();
-  if(!parents.length){renderEmpty();return;}
-  document.getElementById('main-view').innerHTML=`<div class="group-grid">${parents.map(p=>groupCard(p,'page')).join('')}</div>`;
-}
-
-function renderByOwner(){
-  const owners=[...new Set(items.map(i=>i.owner||'Unassigned'))].sort();
-  if(!owners.length){renderEmpty();return;}
-  document.getElementById('main-view').innerHTML=`<div class="group-grid">${owners.map(o=>groupCard(o,'owner')).join('')}</div>`;
-}
-
-function groupCard(groupKey,type){
-  const groupItems=type==='page'?items.filter(i=>(i.parent||'(No parent)')===groupKey):items.filter(i=>(i.owner||'Unassigned')===groupKey);
-  const total=groupItems.length;
-  const counts={};STATUS_ORDER.forEach(s=>counts[s]=0);
-  groupItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
-  const donePct=total?Math.round(counts['Done']/total*100):0;
-  const ini=groupKey.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-  const segs=STATUS_ORDER.map(s=>{const w=total?counts[s]/total*100:0;return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:''}).join('');
-  const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>`<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`).join('');
-  const rows=groupItems.map(i=>`
-    <div class="group-row" onclick="openModal('${i.id}')">
-      <div style="flex:1;min-width:0">
-        <div class="group-row-name">${esc(i.name)}</div>
-        ${type==='owner'&&i.parent?`<div style="font-size:11px;color:var(--text3)">${esc(i.parent)}</div>`:''}
-      </div>
-      <span class="group-row-meta">
-        <span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span>
-        <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
-        ${type==='page'&&i.owner?`<span class="owner-chip" title="${esc(i.owner)}">${i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</span>`:''}
-        ${i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷${i.screenshots.length}</span>`:''}
-      </span>
-    </div>`).join('');
-  const headerLeft=type==='owner'
-    ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} item${total!==1?'s':''} · ${donePct}% done</div></div></div>`
-    :`<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} sub-page${total!==1?'s':''} · ${donePct}% done</div></div>`;
-  return `<div class="group-card">
-    <div class="group-card-header">${headerLeft}<span class="badge ${donePct===100?'s-done':'s-notstarted'}">${donePct}%</span></div>
-    <div class="group-progress-wrap">
-      <div class="group-progress-track">${segs||`<div style="width:100%;height:100%;background:var(--surface2)"></div>`}</div>
-      <div class="group-progress-labels">${labels||'<span style="font-size:11px;color:var(--text3)">No items</span>'}</div>
-    </div>
-    <div class="group-rows">${rows}</div>
-  </div>`;
-}
-
-function renderEmpty(){
   document.getElementById('main-view').innerHTML=`
-    <div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <h3>No entries yet</h3>
-      <p>Add your first entry to start tracking design handoffs, owners, and statuses.</p>
-      <button class="btn btn-dark" onclick="openModal()">Add first entry</button>
+    <div class="manage-wrap">
+      <div class="manage-section-title">Dashboard structure</div>
+      <div class="manage-section-sub">Define your parent pages and their sub-pages here. These become the dropdowns in the Add entry form — keeping everything consistent and structured.</div>
+      <div class="parent-list">${blocksHtml}</div>
+      <div class="add-parent-row">
+        <input id="new-parent-input" placeholder="New parent page name…" onkeydown="if(event.key==='Enter')addParent()"/>
+        <button class="btn btn-dark" onclick="addParent()">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add parent page
+        </button>
+      </div>
     </div>`;
 }
 
-function switchNav(f,el){
-  navFilter=f;
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('page-title').textContent=NAV_LABELS[f]||'All pages';
-  render();
+async function addParent(){
+  const inp=document.getElementById('new-parent-input');
+  const val=inp.value.trim();
+  if(!val) return;
+  if(pageStructure[val]!==undefined){alert('That parent page already exists.');return;}
+  setSync('syncing','Saving…');
+  try{
+    await saveStructure(val,[]);
+    setSync('synced','Saved ✓');
+    inp.value='';
+    renderManagePages();
+  }catch(e){setSync('error','Save failed');console.error(e);}
 }
 
-function setView(v,el){
-  view=v;
-  document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  render();
+async function addSubpage(parent){
+  const inp=document.getElementById(`new-sub-${parent}`);
+  const val=inp.value.trim();
+  if(!val) return;
+  const subs=[...(pageStructure[parent]||[])];
+  if(subs.includes(val)){alert('That sub-page already exists.');return;}
+  subs.push(val);
+  setSync('syncing','Saving…');
+  try{
+    await saveStructure(parent,subs);
+    setSync('synced','Saved ✓');
+    inp.value='';
+    renderManagePages();
+  }catch(e){setSync('error','Save failed');console.error(e);}
+}
+
+async function removeSubpage(parent,idx){
+  const subs=[...(pageStructure[parent]||[])];
+  const name=subs[idx];
+  if(!confirm(`Remove sub-page "${name}"?`)) return;
+  subs.splice(idx,1);
+  setSync('syncing','Saving…');
+  try{
+    await saveStructure(parent,subs);
+    setSync('synced','Saved ✓');
+    renderManagePages();
+  }catch(e){setSync('error','Save failed');console.error(e);}
+}
+
+async function removeParent(parent){
+  if(!confirm(`Delete parent page "${parent}" and all its sub-pages from the structure?\n\nExisting entries won't be deleted.`)) return;
+  setSync('syncing','Saving…');
+  try{
+    await deleteParent(parent);
+    setSync('synced','Saved ✓');
+    renderManagePages();
+  }catch(e){setSync('error','Save failed');console.error(e);}
+}
+
+// ── Entry modal ──
+function populateParentDropdown(selectedParent){
+  const sel=document.getElementById('f-parent');
+  const parents=Object.keys(pageStructure).sort();
+  sel.innerHTML='<option value="">— Select a parent page —</option>'
+    +parents.map(p=>`<option value="${esc(p)}"${p===selectedParent?' selected':''}>${esc(p)}</option>`).join('');
+}
+
+function onParentChange(){
+  const parent=document.getElementById('f-parent').value;
+  const subSel=document.getElementById('f-name');
+  if(!parent){
+    subSel.innerHTML='<option value="">— Select parent page first —</option>';
+    subSel.disabled=true;
+    return;
+  }
+  const subs=pageStructure[parent]||[];
+  if(!subs.length){
+    subSel.innerHTML='<option value="">No sub-pages defined yet</option>';
+    subSel.disabled=true;
+    return;
+  }
+  subSel.disabled=false;
+  subSel.innerHTML='<option value="">— Select a sub-page —</option>'
+    +subs.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
 }
 
 function openModal(id){
   editingId=id||null;
   const m=id?items.find(i=>i.id===id):null;
   document.getElementById('modal-title').textContent=m?'Edit entry':'Add entry';
-  document.getElementById('f-parent').value=m?.parent||'';
-  document.getElementById('f-name').value=m?.name||'';
+  populateParentDropdown(m?.parent||'');
+  if(m?.parent){
+    onParentChange();
+    document.getElementById('f-name').value=m.name||'';
+  } else {
+    document.getElementById('f-name').innerHTML='<option value="">— Select parent page first —</option>';
+    document.getElementById('f-name').disabled=true;
+  }
   document.getElementById('f-notes').value=m?.notes||'';
   document.getElementById('f-owner-input').value=m?.owner||'';
   document.getElementById('f-status').value=m?.status||'Not Started';
@@ -712,17 +651,19 @@ function openModal(id){
   setTimeout(()=>document.getElementById('f-parent').focus(),50);
 }
 
-function closeModal(){document.getElementById('modal-bg').classList.remove('open');editingId=null;currentScreenshots=[];}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  editingId=null;currentScreenshots=[];
+}
 function maybeClose(e){if(e.target===e.currentTarget)closeModal();}
 
 async function saveItem(){
-  const parent=document.getElementById('f-parent').value.trim();
-  const name=document.getElementById('f-name').value.trim();
-  if(!parent){document.getElementById('f-parent').style.borderColor='#EF4444';document.getElementById('f-parent').focus();return;}
-  if(!name){document.getElementById('f-name').style.borderColor='#EF4444';document.getElementById('f-name').focus();return;}
-  document.getElementById('f-parent').style.borderColor='';
-  document.getElementById('f-name').style.borderColor='';
-  if(!parentPages.includes(parent)){parentPages.push(parent);parentPages.sort();}
+  const parent=document.getElementById('f-parent').value;
+  const name=document.getElementById('f-name').value;
+  if(!parent){document.getElementById('f-parent').style.outline='2px solid #EF4444';return;}
+  if(!name){document.getElementById('f-name').style.outline='2px solid #EF4444';return;}
+  document.getElementById('f-parent').style.outline='';
+  document.getElementById('f-name').style.outline='';
   const item={
     id:editingId||uid(),name,parent,
     owner:document.getElementById('f-owner-input').value.trim(),
@@ -747,13 +688,238 @@ async function saveItem(){
 }
 
 async function deleteItem(){
-  if(!editingId||!confirm('Delete this entry? This cannot be undone.'))return;
+  if(!editingId||!confirm('Delete this entry?')) return;
   setSync('syncing','Deleting…');
   try{
     await dbFetch(`${API}?id=eq.${editingId}`,{method:'DELETE',headers:{...HEADERS,'Prefer':'return=minimal'}});
     items=items.filter(i=>i.id!==editingId);
     setSync('synced','Deleted');closeModal();render();
   }catch(e){setSync('error','Delete failed');console.error(e);}
+}
+
+// ── Screenshots ──
+function handleDragOver(e){e.preventDefault();document.getElementById('drop-zone').classList.add('dragover');}
+function handleDragLeave(){document.getElementById('drop-zone').classList.remove('dragover');}
+function handleDrop(e){e.preventDefault();document.getElementById('drop-zone').classList.remove('dragover');handleFiles(e.dataTransfer.files);}
+async function handleFiles(files){
+  const ind=document.getElementById('uploading-indicator');ind.style.display='flex';
+  for(const file of files){
+    if(!file.type.startsWith('image/')) continue;
+    const ext=file.name.split('.').pop();
+    const path=`${uid()}.${ext}`;
+    try{
+      const r=await fetch(`${STORAGE}/object/screenshots/${path}`,{
+        method:'POST',
+        headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':file.type,'x-upsert':'true'},
+        body:file
+      });
+      if(!r.ok) throw new Error(await r.text());
+      currentScreenshots.push(`${STORAGE}/object/public/screenshots/${path}`);
+      renderScreenshots();
+    }catch(e){alert('Upload failed: '+e.message);}
+  }
+  ind.style.display='none';
+}
+function renderScreenshots(){
+  document.getElementById('screenshots-grid').innerHTML=currentScreenshots.map((url,i)=>`
+    <div class="screenshot-thumb">
+      <img src="${esc(url)}" onclick="openLightbox('${esc(url)}')"/>
+      <button class="del-shot" onclick="currentScreenshots.splice(${i},1);renderScreenshots()">
+        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('');
+}
+function openLightbox(url){document.getElementById('lightbox-img').src=url;document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// ── Rendering ──
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function getFiltered(){
+  const fp=document.getElementById('f-priority').value;
+  const fo=document.getElementById('f-owner').value;
+  const sq=(document.getElementById('search-input').value||'').toLowerCase();
+  const statusFilter=STATUS_NAV[navFilter];
+  return items.filter(i=>{
+    if(navFilter==='week'&&i.priority!=='This Week') return false;
+    if(statusFilter&&i.status!==statusFilter) return false;
+    if(fp&&i.priority!==fp) return false;
+    if(fo&&i.owner!==fo) return false;
+    if(sq&&!((i.name||'').toLowerCase().includes(sq)||(i.parent||'').toLowerCase().includes(sq)||(i.notes||'').toLowerCase().includes(sq))) return false;
+    return true;
+  });
+}
+
+function render(){
+  if(navFilter==='manage'){renderManagePages();return;}
+  // Show normal UI
+  document.getElementById('stats-row').style.display='';
+  document.getElementById('view-toggle').style.display='';
+  document.getElementById('btn-add').style.display='';
+  document.getElementById('btn-export').style.display='';
+  renderStats();renderOwnerFilter();renderProgress();
+  document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
+  if(view==='table') renderTable();
+  else if(view==='kanban') renderKanban();
+  else if(view==='bypage') renderByPage();
+  else renderByOwner();
+}
+
+function renderStats(){
+  const c={total:items.length};STATUS_ORDER.forEach(s=>c[s]=0);
+  items.forEach(i=>{if(c[i.status]!==undefined)c[i.status]++;});
+  const pct=items.length?Math.round(c['Done']/items.length*100):0;
+  document.getElementById('stats-row').innerHTML=[
+    {label:'Total',n:c.total,color:'var(--text3)',pct:100},
+    {label:'Not started',n:c['Not Started'],color:'var(--c-ns-dot)',pct:c.total?c['Not Started']/c.total*100:0},
+    {label:'Design',n:c['Design'],color:'var(--c-design-dot)',pct:c.total?c['Design']/c.total*100:0},
+    {label:'Development',n:c['Development'],color:'var(--c-dev-dot)',pct:c.total?c['Development']/c.total*100:0},
+    {label:'Review',n:c['Review'],color:'var(--c-review-dot)',pct:c.total?c['Review']/c.total*100:0},
+    {label:`Done · ${pct}%`,n:c['Done'],color:'var(--c-done-dot)',pct},
+  ].map(s=>`<div class="stat-card"><div class="stat-n" style="color:${s.color}">${s.n}</div><div class="stat-l">${s.label}</div><div class="stat-bar"><div class="stat-bar-fill" style="width:${s.pct}%;background:${s.color}"></div></div></div>`).join('');
+}
+
+function renderProgress(){
+  const pct=items.length?Math.round(items.filter(i=>i.status==='Done').length/items.length*100):0;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+}
+
+function renderOwnerFilter(){
+  const sel=document.getElementById('f-owner');const cur=sel.value;
+  const owners=[...new Set(items.map(i=>i.owner).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">All owners</option>'+owners.map(o=>`<option value="${esc(o)}"${o===cur?' selected':''}>${esc(o)}</option>`).join('');
+}
+
+function renderTable(){
+  const data=getFiltered();
+  if(!data.length){renderEmpty();return;}
+  document.getElementById('main-view').innerHTML=`
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th style="width:15%">Parent page</th><th style="width:18%">Sub-page</th>
+        <th style="width:14%">Status</th><th style="width:12%">Priority</th>
+        <th style="width:7%">Owner</th><th style="width:7%">Handoff</th>
+        <th style="width:5%">📷</th><th>Update needed</th>
+      </tr></thead>
+      <tbody>${data.map(r=>{
+        const ini=r.owner?r.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
+        const handoff=r.handoff?`<a href="${esc(r.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3)">—</span>';
+        const shots=r.screenshots&&r.screenshots.length?`<span style="font-size:12px;color:var(--text2)">${r.screenshots.length}</span>`:'<span style="color:var(--text3)">—</span>';
+        const notes=r.notes?`<span class="notes-cell" title="${esc(r.notes)}">${esc(r.notes)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
+        return `<tr onclick="openModal('${r.id}')">
+          <td>${r.parent?`<span class="parent-tag">${esc(r.parent)}</span>`:'—'}</td>
+          <td><span class="page-name">${esc(r.name)}</span></td>
+          <td><span class="badge ${STATUS_CLASS[r.status]||''}">${esc(r.status)}</span></td>
+          <td><span class="badge ${PRIORITY_CLASS[r.priority]||''}">${esc(r.priority)}</span></td>
+          <td><span class="owner-chip" title="${esc(r.owner||'Unassigned')}">${ini}</span></td>
+          <td>${handoff}</td><td>${shots}</td><td>${notes}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+}
+
+function renderKanban(){
+  const data=getFiltered();
+  document.getElementById('main-view').innerHTML=`<div class="kanban">${STATUS_ORDER.map(s=>{
+    const col=data.filter(i=>i.status===s);
+    return `<div class="k-col">
+      <div class="k-col-header"><span class="k-col-label" style="color:${STATUS_COLOR[s]}">${esc(s)}</span><span class="k-col-count">${col.length}</span></div>
+      ${col.length?col.map(i=>{
+        const ini=i.owner?i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
+        return `<div class="k-card" onclick="openModal('${i.id}')">
+          <div class="k-card-name">${esc(i.name)}</div>
+          <div class="k-card-parent">${esc(i.parent||'—')}</div>
+          <div class="k-card-footer">
+            <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
+            <div style="display:flex;align-items:center;gap:5px">
+              ${i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷${i.screenshots.length}</span>`:''}
+              <span class="owner-chip" title="${esc(i.owner||'Unassigned')}">${ini}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join(''):'<div class="k-empty">Nothing here</div>'}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function renderByPage(){
+  const parents=Object.keys(pageStructure).sort();
+  // also include parents from items not in structure
+  items.forEach(i=>{if(i.parent&&!parents.includes(i.parent))parents.push(i.parent);});
+  if(!parents.length){renderEmpty();return;}
+  document.getElementById('main-view').innerHTML=`<div class="group-grid">${parents.map(p=>groupCard(p,'page')).join('')}</div>`;
+}
+
+function renderByOwner(){
+  const owners=[...new Set(items.map(i=>i.owner||'Unassigned'))].sort();
+  if(!owners.length){renderEmpty();return;}
+  document.getElementById('main-view').innerHTML=`<div class="group-grid">${owners.map(o=>groupCard(o,'owner')).join('')}</div>`;
+}
+
+function groupCard(groupKey,type){
+  const groupItems=type==='page'?items.filter(i=>(i.parent||'')===groupKey):items.filter(i=>(i.owner||'Unassigned')===groupKey);
+  const total=groupItems.length;
+  const counts={};STATUS_ORDER.forEach(s=>counts[s]=0);
+  groupItems.forEach(i=>{if(counts[i.status]!==undefined)counts[i.status]++;});
+  const donePct=total?Math.round(counts['Done']/total*100):0;
+  const ini=groupKey.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const segs=STATUS_ORDER.map(s=>{const w=total?counts[s]/total*100:0;return w>0?`<div class="group-progress-seg" style="width:${w}%;background:${STATUS_COLOR[s]}"></div>`:''}).join('');
+  const labels=STATUS_ORDER.filter(s=>counts[s]>0).map(s=>`<span class="group-progress-label"><span style="width:7px;height:7px;border-radius:50%;background:${STATUS_COLOR[s]};display:inline-block"></span>${counts[s]} ${s}</span>`).join('');
+  const rows=groupItems.length?groupItems.map(i=>`
+    <div class="group-row" onclick="openModal('${i.id}')">
+      <div style="flex:1;min-width:0">
+        <div class="group-row-name">${esc(i.name)}</div>
+        ${type==='owner'&&i.parent?`<div style="font-size:11px;color:var(--text3)">${esc(i.parent)}</div>`:''}
+      </div>
+      <span class="group-row-meta">
+        <span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span>
+        <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
+        ${type==='page'&&i.owner?`<span class="owner-chip">${i.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}</span>`:''}
+        ${i.screenshots&&i.screenshots.length?`<span style="font-size:11px;color:var(--text3)">📷${i.screenshots.length}</span>`:''}
+      </span>
+    </div>`).join(''):'<div style="padding:12px 16px;font-size:12px;color:var(--text3)">No entries yet</div>';
+  const headerLeft=type==='owner'
+    ?`<div style="display:flex;align-items:center;gap:10px"><span class="owner-chip" style="width:32px;height:32px;font-size:12px">${ini}</span><div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} item${total!==1?'s':''} · ${donePct}% done</div></div></div>`
+    :`<div><div class="group-card-title">${esc(groupKey)}</div><div class="group-card-sub">${total} entr${total!==1?'ies':'y'} · ${donePct}% done</div></div>`;
+  return `<div class="group-card">
+    <div class="group-card-header">${headerLeft}<span class="badge ${donePct===100?'s-done':'s-notstarted'}">${donePct}%</span></div>
+    <div class="group-progress-wrap">
+      <div class="group-progress-track">${segs||`<div style="width:100%;height:100%;background:var(--surface2)"></div>`}</div>
+      <div class="group-progress-labels">${labels||'<span style="font-size:11px;color:var(--text3)">No entries</span>'}</div>
+    </div>
+    <div class="group-rows">${rows}</div>
+  </div>`;
+}
+
+function renderEmpty(){
+  const isManageEmpty=Object.keys(pageStructure).length===0;
+  document.getElementById('main-view').innerHTML=`
+    <div class="empty-state">
+      <div class="empty-icon">${isManageEmpty?'🗂️':'📋'}</div>
+      <h3>${isManageEmpty?'Set up your dashboard structure first':'No entries yet'}</h3>
+      <p>${isManageEmpty?'Go to <strong>Manage pages</strong> in the sidebar to define your parent pages and sub-pages before adding entries.':'Add your first entry to start tracking.'}</p>
+      ${isManageEmpty
+        ?`<button class="btn btn-dark" onclick="switchNav('manage',document.querySelector('.nav-item:last-child'))">Go to Manage pages</button>`
+        :`<button class="btn btn-dark" onclick="openModal()">Add first entry</button>`
+      }
+    </div>`;
+}
+
+function switchNav(f,el){
+  navFilter=f;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('page-title').textContent=NAV_LABELS[f]||'All pages';
+  render();
+}
+
+function setView(v,el){
+  view=v;
+  document.querySelectorAll('.vt-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  render();
 }
 
 function exportCSV(){
@@ -765,18 +931,10 @@ function exportCSV(){
 }
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeLightbox()||closeModal();
+  if(e.key==='Escape'){closeLightbox();closeModal();}
   if(e.key==='n'&&!e.target.matches('input,select,textarea')&&!document.getElementById('modal-bg').classList.contains('open'))openModal();
 });
 
-// Add screenshots column to DB if not exists (safe to run multiple times)
-async function ensureScreenshotsColumn(){
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/rpc/exec`,{method:'POST',headers:HEADERS,body:JSON.stringify({sql:"ALTER TABLE pages ADD COLUMN IF NOT EXISTS screenshots jsonb DEFAULT '[]';"})});
-  }catch(e){}
-}
-
-ensureScreenshotsColumn();
 load();
 </script>
 </body>
