@@ -86,16 +86,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 /* Table */
 .tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:visible}
-table{width:100%;border-collapse:collapse;overflow:visible}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
 thead{background:var(--surface2)}
 th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;overflow:hidden}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#FAFAF8}
 tbody tr{cursor:pointer}
-.page-name{font-weight:500}
+.page-name{font-weight:500;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .parent-tag{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 7px;border-radius:4px;display:inline-block}
-.notes-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text2)}
+.notes-cell{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text2)}
 .t-bug{background:#FEF0F0;color:#991B1B}.t-bug::before{background:#EF4444}
 .t-improvement{background:#EEF0FF;color:#3D45B0}.t-improvement::before{background:#3D45B0}
 .t-new{background:#EDFAF0;color:#1B6B35}.t-new::before{background:#2E9550}
@@ -164,6 +164,12 @@ tr:hover .row-actions{opacity:1}
 .form-group label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
 .form-group input,.form-group select,.form-group textarea{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 11px;font-size:13px;color:var(--text);font-family:var(--font);width:100%}
 .form-group select:disabled{color:var(--text3);cursor:not-allowed}
+.combo-wrap{position:relative}
+.combo-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:100;max-height:180px;overflow-y:auto;display:none}
+.combo-dropdown.open{display:block}
+.combo-option{padding:8px 12px;font-size:13px;cursor:pointer;color:var(--text)}
+.combo-option:hover{background:var(--surface2)}
+.combo-option.add-new{color:#1565A0;font-weight:500;border-top:1px solid var(--border)}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid var(--text);outline-offset:1px;background:var(--surface)}
 .form-group textarea{resize:vertical;min-height:80px;line-height:1.5}
 .modal-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:8px}
@@ -309,6 +315,10 @@ tr:hover .row-actions{opacity:1}
     </div>
     <div class="topbar-right">
       <span class="sync-label"><span class="sync-dot" id="sync-dot"></span><span id="sync-text">Loading…</span></span>
+      <button class="btn" onclick="removeDuplicates()" id="btn-dedupe" title="Find and remove duplicate entries">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        Dedupe
+      </button>
       <button class="btn" onclick="exportCSV()" id="btn-export">
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         Export
@@ -372,7 +382,11 @@ tr:hover .row-actions{opacity:1}
         <div class="divider form-full"></div>
         <div class="form-group">
           <label>Owner</label>
-          <input id="f-owner-input" placeholder="e.g. Maria"/>
+          <div class="combo-wrap">
+            <input class="combo-input" id="f-owner-input" placeholder="Select or type a name…" autocomplete="off"
+              oninput="filterOwnerCombo()" onfocus="openOwnerCombo()" onblur="blurOwnerCombo()"/>
+            <div class="combo-dropdown" id="owner-combo-dropdown"></div>
+          </div>
         </div>
         <div class="form-group">
           <label>Type</label>
@@ -500,6 +514,7 @@ const STATUS_NAV    = {'s-notstarted':'Not Started','s-design':'Design','s-dev':
 
 // pageStructure: { [parentName]: { subpages: [], onHold: false } }
 let items=[], pageStructure={}, view='table', navFilter='all', editingId=null, currentScreenshots=[];
+let ownersList=[]; // auto-built from existing entries
 
 function setSync(state,text){
   document.getElementById('sync-dot').className='sync-dot '+state;
@@ -527,6 +542,7 @@ async function load(){
       dbFetch(`${STRUCT_API}?order=parent.asc`)
     ]);
     items = pageData||[];
+    ownersList=[...new Set(items.map(i=>i.owner).filter(Boolean))].sort();
     pageStructure = {};
     (structData||[]).forEach(row=>{ pageStructure[row.parent]={subpages:row.subpages||[], onHold:row.on_hold||false}; });
     setSync('synced','Synced');
@@ -573,6 +589,7 @@ function renderManagePages(){
   document.getElementById('view-toggle').style.display='none';
   document.getElementById('btn-add').style.display='none';
   document.getElementById('btn-export').style.display='none';
+  document.getElementById('btn-dedupe').style.display='none';
 
   const parents=Object.keys(pageStructure).sort();
   const blocksHtml = parents.length ? parents.map(p=>{
@@ -719,6 +736,27 @@ function onParentChange(){
     +subs.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
 }
 
+// ── Owner combo ──
+function openOwnerCombo(){
+  renderOwnerCombo(document.getElementById('f-owner-input').value);
+  document.getElementById('owner-combo-dropdown').classList.add('open');
+}
+function blurOwnerCombo(){setTimeout(()=>document.getElementById('owner-combo-dropdown').classList.remove('open'),200);}
+function filterOwnerCombo(){renderOwnerCombo(document.getElementById('f-owner-input').value);}
+function renderOwnerCombo(q){
+  const dd=document.getElementById('owner-combo-dropdown');
+  const filtered=ownersList.filter(o=>o.toLowerCase().includes((q||'').toLowerCase()));
+  const showAdd=q&&!ownersList.find(o=>o.toLowerCase()===q.toLowerCase());
+  dd.innerHTML=filtered.map(o=>`<div class="combo-option" onmousedown="selectOwner('${esc(o)}')">${esc(o)}</div>`).join('')
+    +(showAdd?`<div class="combo-option add-new" onmousedown="selectOwner('${esc(q)}',true)">＋ Add "${esc(q)}"</div>`:'');
+  if(!filtered.length&&!showAdd) dd.innerHTML='<div class="combo-option" style="color:var(--text3);cursor:default">No matches — type to add new</div>';
+}
+function selectOwner(val,isNew){
+  document.getElementById('f-owner-input').value=val;
+  if(isNew&&!ownersList.includes(val)){ownersList.push(val);ownersList.sort();}
+  document.getElementById('owner-combo-dropdown').classList.remove('open');
+}
+
 function openModal(id){
   editingId=id||null;
   const m=id?items.find(i=>i.id===id):null;
@@ -753,6 +791,29 @@ function closeModal(){
 }
 function maybeClose(e){if(e.target===e.currentTarget)closeModal();}
 
+async function removeDuplicates(){
+  const seen=new Map();
+  const toDelete=[];
+  // sort by updated desc so we keep the most recent of each duplicate group
+  const sorted=[...items].sort((a,b)=>(b.updated||0)-(a.updated||0));
+  sorted.forEach(i=>{
+    const key=`${i.parent}|||${i.name}`;
+    if(seen.has(key)) toDelete.push(i.id);
+    else seen.set(key,i.id);
+  });
+  if(!toDelete.length){alert('No duplicates found.');return;}
+  if(!confirm(`Found ${toDelete.length} duplicate entr${toDelete.length!==1?'ies':'y'} (same parent + sub-page). Keep only the most recent of each and delete the rest?`)) return;
+  setSync('syncing','Removing duplicates…');
+  try{
+    for(const id of toDelete){
+      await dbFetch(`${API}?id=eq.${id}`,{method:'DELETE',headers:{...HEADERS,'Prefer':'return=minimal'}});
+    }
+    items=items.filter(i=>!toDelete.includes(i.id));
+    setSync('synced',`Removed ${toDelete.length}`);
+    render();
+  }catch(e){setSync('error','Cleanup failed');console.error(e);}
+}
+
 async function saveItem(){
   const parent=document.getElementById('f-parent').value;
   const name=document.getElementById('f-name').value;
@@ -760,6 +821,18 @@ async function saveItem(){
   if(!name){document.getElementById('f-name').style.outline='2px solid #EF4444';return;}
   document.getElementById('f-parent').style.outline='';
   document.getElementById('f-name').style.outline='';
+
+  // Duplicate check — only for new entries (not edits)
+  if(!editingId){
+    const dup=items.find(i=>i.parent===parent && i.name===name);
+    if(dup){
+      const proceed=confirm(`An entry for "${parent} → ${name}" already exists (status: ${dup.status}).\n\nAdd a duplicate anyway?`);
+      if(!proceed) return;
+    }
+  }
+
+  const ownerVal=document.getElementById('f-owner-input').value.trim();
+  if(ownerVal&&!ownersList.includes(ownerVal)){ownersList.push(ownerVal);ownersList.sort();}
   const item={
     id:editingId||uid(),name,parent,
     owner:document.getElementById('f-owner-input').value.trim(),
@@ -857,6 +930,7 @@ function render(){
   document.getElementById('view-toggle').style.display='';
   document.getElementById('btn-add').style.display='';
   document.getElementById('btn-export').style.display='';
+  document.getElementById('btn-dedupe').style.display='';
   renderStats();renderOwnerFilter();renderProgress();
   document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
   if(view==='table') renderTable();
