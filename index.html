@@ -338,6 +338,11 @@ tr:hover .row-actions{opacity:1}
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" id="search-input" placeholder="Search…" oninput="render()"/>
       </div>
+      <select class="filter-select" id="f-status" onchange="render()">
+        <option value="">All statuses</option>
+        <option>Not Started</option><option>Design</option>
+        <option>Development</option><option>Review</option><option>Done</option>
+      </select>
       <select class="filter-select" id="f-priority" onchange="render()">
         <option value="">All priorities</option>
         <option>This Week</option><option>Next Week</option><option>On Hold</option>
@@ -345,6 +350,7 @@ tr:hover .row-actions{opacity:1}
       <select class="filter-select" id="f-owner" onchange="render()">
         <option value="">All owners</option>
       </select>
+      <button class="btn btn-sm" onclick="clearFilters()" id="btn-clear-filters" style="display:none">Clear filters</button>
     </div>
     <div id="main-view"></div>
   </div>
@@ -911,18 +917,29 @@ function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 function getFiltered(){
+  const fs=document.getElementById('f-status').value;
   const fp=document.getElementById('f-priority').value;
   const fo=document.getElementById('f-owner').value;
   const sq=(document.getElementById('search-input').value||'').toLowerCase();
-  const statusFilter=STATUS_NAV[navFilter];
+  const navStatusFilter=STATUS_NAV[navFilter];
+  document.getElementById('btn-clear-filters').style.display=(fs||fp||fo||sq)?'inline-flex':'none';
   return items.filter(i=>{
     if(navFilter==='week'&&i.priority!=='This Week') return false;
-    if(statusFilter&&i.status!==statusFilter) return false;
+    if(navStatusFilter&&i.status!==navStatusFilter) return false;
+    if(fs&&i.status!==fs) return false;
     if(fp&&i.priority!==fp) return false;
     if(fo&&i.owner!==fo) return false;
     if(sq&&!((i.name||'').toLowerCase().includes(sq)||(i.parent||'').toLowerCase().includes(sq)||(i.notes||'').toLowerCase().includes(sq))) return false;
     return true;
   });
+}
+
+function clearFilters(){
+  document.getElementById('f-status').value='';
+  document.getElementById('f-priority').value='';
+  document.getElementById('f-owner').value='';
+  document.getElementById('search-input').value='';
+  render();
 }
 
 function render(){
