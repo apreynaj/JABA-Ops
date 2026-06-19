@@ -99,7 +99,14 @@ tbody tr{cursor:pointer}
 .t-bug{background:#FEF0F0;color:#991B1B}.t-bug::before{background:#EF4444}
 .t-improvement{background:#EEF0FF;color:#3D45B0}.t-improvement::before{background:#3D45B0}
 .t-new{background:#EDFAF0;color:#1B6B35}.t-new::before{background:#2E9550}
-/* Inline row actions */
+/* Inline dropdown */
+.inline-select-wrap{position:relative;display:inline-block}
+.inline-dropdown{position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:50;min-width:140px;overflow:hidden;display:none}
+.inline-dropdown.open{display:block}
+.inline-dropdown-opt{padding:8px 12px;font-size:12px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:7px}
+.inline-dropdown-opt:hover{background:var(--surface2)}
+.inline-dropdown-opt.active{font-weight:600}
+.inline-dropdown-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .row-actions{display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .15s;flex-shrink:0}
 tr:hover .row-actions{opacity:1}
 .row-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:4px 7px;cursor:pointer;font-size:11px;font-weight:500;display:flex;align-items:center;gap:3px;color:var(--text2);font-family:var(--font);white-space:nowrap}
@@ -448,8 +455,34 @@ async function quickUpdate(id,field,value){
     setSync('synced','Saved ✓');render();
   }catch(e){setSync('error','Save failed');console.error(e);}
 }
-function cycleStatus(e,id,current){e.stopPropagation();const idx=STATUS_ORDER.indexOf(current);quickUpdate(id,'status',STATUS_ORDER[(idx+1)%STATUS_ORDER.length]);}
-function cyclePriority(e,id,current){e.stopPropagation();const idx=PRIORITY_ORDER.indexOf(current);quickUpdate(id,'priority',PRIORITY_ORDER[(idx+1)%PRIORITY_ORDER.length]);}
+function openInlineDropdown(e, id, field, current, options, colorFn){
+  e.stopPropagation();
+  // close any open dropdowns first
+  document.querySelectorAll('.inline-dropdown.open').forEach(d=>d.classList.remove('open'));
+  const wrap=e.currentTarget.closest('.inline-select-wrap');
+  let dd=wrap.querySelector('.inline-dropdown');
+  if(!dd){
+    dd=document.createElement('div');
+    dd.className='inline-dropdown';
+    dd.innerHTML=options.map(o=>`
+      <div class="inline-dropdown-opt${o===current?' active':''}" onclick="pickInline(event,'${id}','${field}','${o}')">
+        <span class="inline-dropdown-dot" style="background:${colorFn(o)}"></span>${o}
+      </div>`).join('');
+    wrap.appendChild(dd);
+    // close on outside click
+    setTimeout(()=>document.addEventListener('click',()=>dd.classList.remove('open'),{once:true}),0);
+  }
+  dd.classList.toggle('open');
+}
+
+async function pickInline(e,id,field,value){
+  e.stopPropagation();
+  document.querySelectorAll('.inline-dropdown.open').forEach(d=>d.classList.remove('open'));
+  await quickUpdate(id,field,value);
+}
+
+function statusColor(s){return STATUS_COLOR[s]||'var(--text3)';}
+function priorityColor(p){return {'This Week':'#EF4444','Next Week':'#F59E0B','On Hold':'var(--text3)'}[p]||'var(--text3)';}
 async function quickDelete(e,id){
   e.stopPropagation();
   if(!confirm('Delete this update?'))return;
@@ -857,15 +890,15 @@ function renderTable(){
     <div class="tbl-wrap"><table>
       <thead><tr>
         <th style="width:13%">Parent page</th>
-        <th style="width:16%">Sub-page</th>
-        <th style="width:8%">Type</th>
+        <th style="width:15%">Sub-page</th>
+        <th style="width:7%">Type</th>
         <th style="width:13%">Status</th>
         <th style="width:11%">Priority</th>
         <th style="width:6%">Owner</th>
+        <th>Update needed</th>
         <th style="width:7%">Handoff</th>
         <th style="width:4%">📷</th>
-        <th>Update needed</th>
-        <th style="width:90px"></th>
+        <th style="width:80px"></th>
       </tr></thead>
       <tbody>${data.map(r=>{
         const ini=r.owner?r.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
@@ -877,12 +910,20 @@ function renderTable(){
           <td>${r.parent?`<span class="parent-tag">${esc(r.parent)}</span>`:'—'}</td>
           <td><span class="page-name">${esc(r.name)}</span></td>
           <td>${typeBadge}</td>
-          <td><span class="badge badge-btn ${STATUS_CLASS[r.status]||''}" onclick="cycleStatus(event,'${r.id}','${r.status}')" title="Click to change status">${esc(r.status)} ↻</span></td>
-          <td><span class="badge badge-btn ${PRIORITY_CLASS[r.priority]||''}" onclick="cyclePriority(event,'${r.id}','${r.priority}')" title="Click to change priority">${esc(r.priority)} ↻</span></td>
+          <td onclick="event.stopPropagation()">
+            <div class="inline-select-wrap">
+              <span class="badge badge-btn ${STATUS_CLASS[r.status]||''}" onclick="openInlineDropdown(event,'${r.id}','status','${r.status}',STATUS_ORDER,statusColor)">${esc(r.status)} ▾</span>
+            </div>
+          </td>
+          <td onclick="event.stopPropagation()">
+            <div class="inline-select-wrap">
+              <span class="badge badge-btn ${PRIORITY_CLASS[r.priority]||''}" onclick="openInlineDropdown(event,'${r.id}','priority','${r.priority}',PRIORITY_ORDER,priorityColor)">${esc(r.priority)} ▾</span>
+            </div>
+          </td>
           <td><span class="owner-chip" title="${esc(r.owner||'Unassigned')}">${ini}</span></td>
+          <td>${notes}</td>
           <td>${handoff}</td>
           <td>${shots}</td>
-          <td>${notes}</td>
           <td>
             <div class="row-actions">
               <button class="row-btn" onclick="event.stopPropagation();openModal('${r.id}')" title="Edit">
