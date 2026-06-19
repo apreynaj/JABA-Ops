@@ -85,8 +85,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .link-btn:hover{background:#D0E8F8}
 
 /* Table */
-.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-table{width:100%;border-collapse:collapse}
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:visible}
+table{width:100%;border-collapse:collapse;overflow:visible}
 thead{background:var(--surface2)}
 th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
@@ -101,7 +101,7 @@ tbody tr{cursor:pointer}
 .t-new{background:#EDFAF0;color:#1B6B35}.t-new::before{background:#2E9550}
 /* Inline dropdown */
 .inline-select-wrap{position:relative;display:inline-block}
-.inline-dropdown{position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:50;min-width:140px;overflow:hidden;display:none}
+.inline-dropdown{position:absolute;top:calc(100% + 4px);left:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;min-width:160px;overflow:hidden;display:none}
 .inline-dropdown.open{display:block}
 .inline-dropdown-opt{padding:8px 12px;font-size:12px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:7px}
 .inline-dropdown-opt:hover{background:var(--surface2)}
@@ -363,8 +363,11 @@ tr:hover .row-actions{opacity:1}
           </select>
         </div>
         <div class="form-group form-full">
-          <label>Update needed</label>
-          <textarea id="f-notes" placeholder="Describe what needs to be done, known issues, light/dark specifics…"></textarea>
+          <label style="display:flex;justify-content:space-between;align-items:center">
+            Update needed
+            <span id="notes-counter" style="font-size:11px;color:var(--text3);font-weight:400">0/280</span>
+          </label>
+          <textarea id="f-notes" placeholder="Describe what needs to be done, known issues, light/dark specifics…" maxlength="280" oninput="document.getElementById('notes-counter').textContent=this.value.length+'/280';document.getElementById('notes-counter').style.color=this.value.length>250?'#E88C00':'var(--text3)'"></textarea>
         </div>
         <div class="divider form-full"></div>
         <div class="form-group">
@@ -730,6 +733,9 @@ function openModal(id){
   }
   document.getElementById('f-type').value=m?.type||'';
   document.getElementById('f-notes').value=m?.notes||'';
+  const notesLen=(m?.notes||'').length;
+  document.getElementById('notes-counter').textContent=notesLen+'/280';
+  document.getElementById('notes-counter').style.color=notesLen>250?'#E88C00':'var(--text3)';
   document.getElementById('f-owner-input').value=m?.owner||'';
   document.getElementById('f-status').value=m?.status||'Not Started';
   document.getElementById('f-priority-input').value=m?.priority||'This Week';
@@ -951,6 +957,7 @@ function renderKanban(){
         return `<div class="k-card" onclick="openModal('${i.id}')">
           <div class="k-card-name">${esc(i.name)}</div>
           <div class="k-card-parent">${esc(i.parent||'—')}</div>
+          ${i.notes?`<div style="font-size:12px;color:var(--text2);margin-bottom:8px;line-height:1.4">${esc(i.notes)}</div>`:''}
           <div class="k-card-footer">
             <span class="badge ${PRIORITY_CLASS[i.priority]||''}">${esc(i.priority)}</span>
             <div style="display:flex;align-items:center;gap:5px">
@@ -1000,7 +1007,8 @@ function groupCard(groupKey,type){
     <div class="group-row" onclick="openModal('${i.id}')">
       <div style="flex:1;min-width:0">
         <div class="group-row-name">${esc(i.name)}</div>
-        ${type==='owner'&&i.parent?`<div style="font-size:11px;color:var(--text3)">${esc(i.parent)}</div>`:''}
+        ${i.notes?`<div style="font-size:11px;color:var(--text2);margin-top:2px;line-height:1.4">${esc(i.notes)}</div>`:''}
+        ${type==='owner'&&i.parent?`<div style="font-size:11px;color:var(--text3);margin-top:2px">${esc(i.parent)}</div>`:''}
       </div>
       <span class="group-row-meta">
         <span class="badge ${STATUS_CLASS[i.status]||''}">${esc(i.status)}</span>
