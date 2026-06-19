@@ -90,6 +90,7 @@ table{width:100%;border-collapse:collapse;table-layout:fixed}
 thead{background:var(--surface2)}
 th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
 td{padding:11px 14px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle;overflow:hidden}
+td.td-badge{overflow:visible}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#FAFAF8}
 tbody tr{cursor:pointer}
@@ -971,14 +972,14 @@ function renderTable(){
   document.getElementById('main-view').innerHTML=`
     <div class="tbl-wrap"><table>
       <thead><tr>
-        <th style="width:13%">Parent page</th>
-        <th style="width:15%">Sub-page</th>
-        <th style="width:7%">Type</th>
-        <th style="width:13%">Status</th>
-        <th style="width:11%">Priority</th>
-        <th style="width:6%">Owner</th>
+        <th style="width:9%">Parent page</th>
+        <th style="width:11%">Sub-page</th>
+        <th style="width:9%">Type</th>
+        <th style="width:11%">Status</th>
+        <th style="width:10%">Priority</th>
+        <th style="width:5%">Owner</th>
         <th>Update needed</th>
-        <th style="width:7%">Handoff</th>
+        <th style="width:6%">Handoff</th>
         <th style="width:4%">📷</th>
         <th style="width:80px"></th>
       </tr></thead>
@@ -991,13 +992,13 @@ function renderTable(){
         return `<tr onclick="openModal('${r.id}')">
           <td>${r.parent?`<span class="parent-tag">${esc(r.parent)}</span>`:'—'}</td>
           <td><span class="page-name">${esc(r.name)}</span></td>
-          <td>${typeBadge}</td>
-          <td onclick="event.stopPropagation()">
+          <td class="td-badge">${typeBadge}</td>
+          <td class="td-badge" onclick="event.stopPropagation()">
             <div class="inline-select-wrap">
               <span class="badge badge-btn ${STATUS_CLASS[r.status]||''}" onclick="openInlineDropdown(event,'${r.id}','status','${r.status}',STATUS_ORDER,statusColor)">${esc(r.status)} ▾</span>
             </div>
           </td>
-          <td onclick="event.stopPropagation()">
+          <td class="td-badge" onclick="event.stopPropagation()">
             <div class="inline-select-wrap">
               <span class="badge badge-btn ${PRIORITY_CLASS[r.priority]||''}" onclick="openInlineDropdown(event,'${r.id}','priority','${r.priority}',PRIORITY_ORDER,priorityColor)">${esc(r.priority)} ▾</span>
             </div>
