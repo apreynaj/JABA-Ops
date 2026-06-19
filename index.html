@@ -396,9 +396,26 @@ tr:hover .row-actions{opacity:1}
             <option>This Week</option><option>Next Week</option><option>On Hold</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Handoff link</label>
-          <input id="f-handoff" placeholder="https://…"/>
+        <div class="form-group form-full">
+          <label>Handoff file (zip)</label>
+          <div id="handoff-drop-zone" style="border:1.5px dashed var(--border);border-radius:var(--radius);padding:14px;text-align:center;cursor:pointer;background:var(--bg);transition:all .15s" onclick="document.getElementById('handoff-input').click()" ondragover="event.preventDefault();this.style.borderColor='var(--text)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleHandoffDrop(event)">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color:var(--text3)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            <p style="font-size:12px;color:var(--text3);margin-top:5px">Click or drag a .zip file to upload</p>
+          </div>
+          <input type="file" id="handoff-input" accept=".zip,application/zip" style="display:none" onchange="handleHandoffFile(this.files[0])"/>
+          <div id="handoff-current" style="display:none;margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:7px;min-width:0">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text2);flex-shrink:0"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+              <span id="handoff-filename" style="font-size:12px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+            </div>
+            <button class="btn-ghost" onclick="removeHandoff()" style="flex-shrink:0" title="Remove handoff">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div id="handoff-uploading" style="display:none;font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;margin-top:6px">
+            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            Uploading handoff…
+          </div>
         </div>
         <div class="divider form-full"></div>
         <div class="form-group form-full">
@@ -741,7 +758,9 @@ function openModal(id){
   document.getElementById('f-priority-input').value=m?.priority||'This Week';
   document.getElementById('f-handoff').value=m?.handoff||'';
   currentScreenshots=m?.screenshots?[...m.screenshots]:[];
+  currentHandoff=m?.handoff_url?{url:m.handoff_url,filename:m.handoff_filename||'handoff.zip'}:null;
   renderScreenshots();
+  showHandoffCurrent();
   document.getElementById('delete-btn').style.display=m?'inline-flex':'none';
   document.getElementById('modal-bg').classList.add('open');
   setTimeout(()=>document.getElementById('f-parent').focus(),50);
@@ -749,7 +768,7 @@ function openModal(id){
 
 function closeModal(){
   document.getElementById('modal-bg').classList.remove('open');
-  editingId=null;currentScreenshots=[];
+  editingId=null;currentScreenshots=[];currentHandoff=null;
 }
 function maybeClose(e){if(e.target===e.currentTarget)closeModal();}
 
@@ -768,6 +787,8 @@ async function saveItem(){
     handoff:document.getElementById('f-handoff').value.trim(),
     notes:document.getElementById('f-notes').value.trim(),
     screenshots:currentScreenshots,
+    handoff_url:currentHandoff?.url||null,
+    handoff_filename:currentHandoff?.filename||null,
     type:document.getElementById('f-type').value,
     updated:Date.now()
   };
@@ -825,6 +846,50 @@ function renderScreenshots(){
         <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>`).join('');
+}
+
+// ── Handoff upload ──
+let currentHandoff = null; // { url, filename }
+
+function handleHandoffDrop(e){
+  e.preventDefault();
+  document.getElementById('handoff-drop-zone').style.borderColor='var(--border)';
+  const file=e.dataTransfer.files[0];
+  if(file) handleHandoffFile(file);
+}
+
+async function handleHandoffFile(file){
+  if(!file) return;
+  document.getElementById('handoff-uploading').style.display='flex';
+  document.getElementById('handoff-current').style.display='none';
+  const ext=file.name.split('.').pop();
+  const path=`${uid()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_')}`;
+  try{
+    const r=await fetch(`${STORAGE}/object/handoffs/${path}`,{
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/zip','x-upsert':'true'},
+      body:file
+    });
+    if(!r.ok) throw new Error(await r.text());
+    currentHandoff={url:`${STORAGE}/object/public/handoffs/${path}`,filename:file.name};
+    showHandoffCurrent();
+  }catch(e){alert('Handoff upload failed: '+e.message);console.error(e);}
+  document.getElementById('handoff-uploading').style.display='none';
+}
+
+function showHandoffCurrent(){
+  if(!currentHandoff){
+    document.getElementById('handoff-current').style.display='none';
+    return;
+  }
+  document.getElementById('handoff-current').style.display='flex';
+  document.getElementById('handoff-filename').textContent=currentHandoff.filename;
+}
+
+function removeHandoff(){
+  currentHandoff=null;
+  showHandoffCurrent();
+  document.getElementById('handoff-input').value='';
 }
 function openLightbox(url){document.getElementById('lightbox-img').src=url;document.getElementById('lightbox').classList.add('open');}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
@@ -908,7 +973,7 @@ function renderTable(){
       </tr></thead>
       <tbody>${data.map(r=>{
         const ini=r.owner?r.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
-        const handoff=r.handoff?`<a href="${esc(r.handoff)}" class="link-btn" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Open</a>`:'<span style="color:var(--text3)">—</span>';
+        const handoff=r.handoff_url?`<a href="${esc(r.handoff_url)}" class="link-btn" download="${esc(r.handoff_filename||'handoff.zip')}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> .zip</a>`:'<span style="color:var(--text3)">—</span>';
         const shots=r.screenshots&&r.screenshots.length?`<span style="font-size:12px;color:var(--text2)">${r.screenshots.length}</span>`:'<span style="color:var(--text3)">—</span>';
         const notes=r.notes?`<span class="notes-cell" title="${esc(r.notes)}">${esc(r.notes)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
         const typeBadge=r.type?`<span class="badge ${TYPE_CLASS[r.type]||''}">${esc(r.type)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
