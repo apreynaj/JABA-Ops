@@ -863,13 +863,13 @@ async function handleHandoffFile(file){
   const ext=file.name.split('.').pop();
   const path=`${uid()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_')}`;
   try{
-    const r=await fetch(`${STORAGE}/object/handoffs/${path}`,{
+    const r=await fetch(`${STORAGE}/object/Handoffs/${path}`,{
       method:'POST',
       headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/zip','x-upsert':'true'},
       body:file
     });
     if(!r.ok) throw new Error(await r.text());
-    currentHandoff={url:`${STORAGE}/object/public/handoffs/${path}`,filename:file.name};
+    currentHandoff={url:`${STORAGE}/object/public/Handoffs/${path}`,filename:file.name};
     showHandoffCurrent();
   }catch(e){alert('Handoff upload failed: '+e.message);console.error(e);}
   document.getElementById('handoff-uploading').style.display='none';
