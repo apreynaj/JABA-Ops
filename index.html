@@ -798,12 +798,12 @@ async function removeDuplicates(){
   // sort by updated desc so we keep the most recent of each duplicate group
   const sorted=[...items].sort((a,b)=>(b.updated||0)-(a.updated||0));
   sorted.forEach(i=>{
-    const key=`${i.parent}|||${i.name}`;
+    const key=`${i.parent}|||${i.name}|||${(i.notes||'').trim().toLowerCase()}`;
     if(seen.has(key)) toDelete.push(i.id);
     else seen.set(key,i.id);
   });
   if(!toDelete.length){alert('No duplicates found.');return;}
-  if(!confirm(`Found ${toDelete.length} duplicate entr${toDelete.length!==1?'ies':'y'} (same parent + sub-page). Keep only the most recent of each and delete the rest?`)) return;
+  if(!confirm(`Found ${toDelete.length} duplicate entr${toDelete.length!==1?'ies':'y'} (same parent + sub-page + identical update text). Keep only the most recent of each and delete the rest?`)) return;
   setSync('syncing','Removing duplicates…');
   try{
     for(const id of toDelete){
@@ -823,11 +823,12 @@ async function saveItem(){
   document.getElementById('f-parent').style.outline='';
   document.getElementById('f-name').style.outline='';
 
-  // Duplicate check — only for new entries (not edits)
+  // Duplicate check — only for new entries, compares parent + sub-page + the actual update text
   if(!editingId){
-    const dup=items.find(i=>i.parent===parent && i.name===name);
+    const notesVal=document.getElementById('f-notes').value.trim().toLowerCase();
+    const dup=items.find(i=>i.parent===parent && i.name===name && (i.notes||'').trim().toLowerCase()===notesVal && notesVal!=='');
     if(dup){
-      const proceed=confirm(`An entry for "${parent} → ${name}" already exists (status: ${dup.status}).\n\nAdd a duplicate anyway?`);
+      const proceed=confirm(`This exact update already exists for "${parent} → ${name}":\n\n"${dup.notes}"\n\n(status: ${dup.status})\n\nAdd it again anyway?`);
       if(!proceed) return;
     }
   }
