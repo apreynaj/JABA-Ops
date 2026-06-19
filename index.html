@@ -85,7 +85,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .link-btn:hover{background:#D0E8F8}
 
 /* Table */
-.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:visible}
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow-x:auto;overflow-y:visible}
 table{width:100%;border-collapse:collapse;table-layout:fixed}
 thead{background:var(--surface2)}
 th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--text3);text-align:left;border-bottom:1px solid var(--border);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
@@ -108,9 +108,9 @@ tbody tr{cursor:pointer}
 .inline-dropdown-opt:hover{background:var(--surface2)}
 .inline-dropdown-opt.active{font-weight:600}
 .inline-dropdown-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.row-actions{display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .15s;flex-shrink:0}
+.row-actions{display:flex;align-items:center;gap:3px;opacity:0;transition:opacity .15s;flex-shrink:0;white-space:nowrap}
 tr:hover .row-actions{opacity:1}
-.row-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:4px 7px;cursor:pointer;font-size:11px;font-weight:500;display:flex;align-items:center;gap:3px;color:var(--text2);font-family:var(--font);white-space:nowrap}
+.row-btn{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 6px;cursor:pointer;font-size:10px;font-weight:500;display:flex;align-items:center;gap:2px;color:var(--text2);font-family:var(--font);white-space:nowrap}
 .row-btn:hover{background:var(--surface2)}
 .row-btn-del{border-color:#FECACA;color:#B91C1C}
 .row-btn-del:hover{background:#FEF2F2}
@@ -981,7 +981,7 @@ function renderTable(){
         <th>Update needed</th>
         <th style="width:6%">Handoff</th>
         <th style="width:4%">📷</th>
-        <th style="width:80px"></th>
+        <th style="width:95px;min-width:95px"></th>
       </tr></thead>
       <tbody>${data.map(r=>{
         const ini=r.owner?r.owner.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';
@@ -1007,14 +1007,13 @@ function renderTable(){
           <td>${notes}</td>
           <td>${handoff}</td>
           <td>${shots}</td>
-          <td>
+          <td style="overflow:visible">
             <div class="row-actions">
               <button class="row-btn" onclick="event.stopPropagation();openModal('${r.id}')" title="Edit">
-                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                Edit
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </button>
               <button class="row-btn row-btn-del" onclick="quickDelete(event,'${r.id}')" title="Delete">
-                <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
               </button>
             </div>
           </td>
