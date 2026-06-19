@@ -756,7 +756,6 @@ function openModal(id){
   document.getElementById('f-owner-input').value=m?.owner||'';
   document.getElementById('f-status').value=m?.status||'Not Started';
   document.getElementById('f-priority-input').value=m?.priority||'This Week';
-  document.getElementById('f-handoff').value=m?.handoff||'';
   currentScreenshots=m?.screenshots?[...m.screenshots]:[];
   currentHandoff=m?.handoff_url?{url:m.handoff_url,filename:m.handoff_filename||'handoff.zip'}:null;
   renderScreenshots();
@@ -784,7 +783,6 @@ async function saveItem(){
     owner:document.getElementById('f-owner-input').value.trim(),
     status:document.getElementById('f-status').value,
     priority:document.getElementById('f-priority-input').value,
-    handoff:document.getElementById('f-handoff').value.trim(),
     notes:document.getElementById('f-notes').value.trim(),
     screenshots:currentScreenshots,
     handoff_url:currentHandoff?.url||null,
