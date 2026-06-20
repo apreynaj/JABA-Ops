@@ -338,18 +338,20 @@ tr:hover .row-actions{opacity:1}
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" id="search-input" placeholder="Search…" oninput="render()"/>
       </div>
-      <select class="filter-select" id="f-status" onchange="render()" autocomplete="off">
-        <option value="">All statuses</option>
-        <option>Not Started</option><option>Design</option>
-        <option>Development</option><option>Review</option><option>Done</option>
-      </select>
-      <select class="filter-select" id="f-priority" onchange="render()" autocomplete="off">
-        <option value="">All priorities</option>
-        <option>This Week</option><option>Next Week</option><option>On Hold</option>
-      </select>
-      <select class="filter-select" id="f-owner" onchange="render()" autocomplete="off">
-        <option value="">All owners</option>
-      </select>
+      <div id="extra-filters" style="display:contents">
+        <select class="filter-select" id="f-status" onchange="render()" autocomplete="off">
+          <option value="">All statuses</option>
+          <option>Not Started</option><option>Design</option>
+          <option>Development</option><option>Review</option><option>Done</option>
+        </select>
+        <select class="filter-select" id="f-priority" onchange="render()" autocomplete="off">
+          <option value="">All priorities</option>
+          <option>This Week</option><option>Next Week</option><option>On Hold</option>
+        </select>
+        <select class="filter-select" id="f-owner" onchange="render()" autocomplete="off">
+          <option value="">All owners</option>
+        </select>
+      </div>
       <button class="btn btn-sm" onclick="clearFilters()" id="btn-clear-filters" style="display:none">Clear filters</button>
     </div>
     <div id="main-view"></div>
@@ -951,7 +953,9 @@ function render(){
   document.getElementById('btn-export').style.display='';
   document.getElementById('btn-dedupe').style.display='';
   renderStats();renderOwnerFilter();renderProgress();
-  document.getElementById('filters-row').style.display=['table','kanban'].includes(view)?'flex':'none';
+  document.getElementById('filters-row').style.display=['table','kanban','bypage','byowner'].includes(view)?'flex':'none';
+  document.getElementById('extra-filters').style.display=['table','kanban'].includes(view)?'contents':'none';
+  document.getElementById('search-input').placeholder = (view==='bypage') ? 'Search parent pages…' : (view==='byowner') ? 'Search owners…' : 'Search…';
   if(view==='table') renderTable();
   else if(view==='kanban') renderKanban();
   else if(view==='bypage') renderByPage();
@@ -1078,13 +1082,27 @@ function renderByPage(){
     if(!aHold&&bHold) return -1;
     return a.localeCompare(b);
   });
-  document.getElementById('main-view').innerHTML=`<div class="group-grid">${parents.map(p=>groupCard(p,'page')).join('')}</div>`;
+  const sq=(document.getElementById('search-input').value||'').toLowerCase();
+  const filtered=sq?parents.filter(p=>p.toLowerCase().includes(sq)):parents;
+  document.getElementById('btn-clear-filters').style.display=sq?'inline-flex':'none';
+  if(!filtered.length){
+    document.getElementById('main-view').innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><h3>No matching pages</h3><p>Try a different search term.</p></div>`;
+    return;
+  }
+  document.getElementById('main-view').innerHTML=`<div class="group-grid">${filtered.map(p=>groupCard(p,'page')).join('')}</div>`;
 }
 
 function renderByOwner(){
   const owners=[...new Set(items.map(i=>i.owner||'Unassigned'))].sort();
   if(!owners.length){renderEmpty();return;}
-  document.getElementById('main-view').innerHTML=`<div class="group-grid">${owners.map(o=>groupCard(o,'owner')).join('')}</div>`;
+  const sq=(document.getElementById('search-input').value||'').toLowerCase();
+  const filtered=sq?owners.filter(o=>o.toLowerCase().includes(sq)):owners;
+  document.getElementById('btn-clear-filters').style.display=sq?'inline-flex':'none';
+  if(!filtered.length){
+    document.getElementById('main-view').innerHTML=`<div class="empty-state"><div class="empty-icon">🔍</div><h3>No matching owners</h3><p>Try a different search term.</p></div>`;
+    return;
+  }
+  document.getElementById('main-view').innerHTML=`<div class="group-grid">${filtered.map(o=>groupCard(o,'owner')).join('')}</div>`;
 }
 
 function groupCard(groupKey,type){
