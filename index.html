@@ -338,16 +338,16 @@ tr:hover .row-actions{opacity:1}
         <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" id="search-input" placeholder="Search…" oninput="render()"/>
       </div>
-      <select class="filter-select" id="f-status" onchange="render()">
+      <select class="filter-select" id="f-status" onchange="render()" autocomplete="off">
         <option value="">All statuses</option>
         <option>Not Started</option><option>Design</option>
         <option>Development</option><option>Review</option><option>Done</option>
       </select>
-      <select class="filter-select" id="f-priority" onchange="render()">
+      <select class="filter-select" id="f-priority" onchange="render()" autocomplete="off">
         <option value="">All priorities</option>
         <option>This Week</option><option>Next Week</option><option>On Hold</option>
       </select>
-      <select class="filter-select" id="f-owner" onchange="render()">
+      <select class="filter-select" id="f-owner" onchange="render()" autocomplete="off">
         <option value="">All owners</option>
       </select>
       <button class="btn btn-sm" onclick="clearFilters()" id="btn-clear-filters" style="display:none">Clear filters</button>
@@ -783,7 +783,7 @@ function openModal(id){
   document.getElementById('notes-counter').style.color=notesLen>250?'#E88C00':'var(--text3)';
   document.getElementById('f-owner-input').value=m?.owner||'';
   document.getElementById('f-status').value=m?.status||'Not Started';
-  document.getElementById('f-priority-input').value=m?.priority||'This Week';
+  document.getElementById('f-priority-input').value=m?.priority||'Next Week';
   document.getElementById('f-handoff').value=m?.handoff||'';
   currentScreenshots=m?.screenshots?[...m.screenshots]:[];
   renderScreenshots();
@@ -1165,6 +1165,16 @@ function exportCSV(){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeLightbox();closeModal();}
   if(e.key==='n'&&!e.target.matches('input,select,textarea')&&!document.getElementById('modal-bg').classList.contains('open'))openModal();
+});
+
+// Reset filters on fresh page load — browsers sometimes restore stale <select> values
+window.addEventListener('DOMContentLoaded',()=>{
+  ['f-status','f-priority','f-owner'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  const search=document.getElementById('search-input');
+  if(search) search.value='';
 });
 
 load();
