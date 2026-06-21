@@ -361,11 +361,14 @@ tr:hover .row-actions{opacity:1}
 <!-- Entry Modal -->
 <div class="modal-bg" id="modal-bg" onclick="maybeClose(event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <h3 id="modal-title">Add entry</h3>
-      <button class="modal-close" onclick="closeModal()">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+    <div class="modal-header" style="flex-direction:column;align-items:stretch;gap:4px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <h3 id="modal-title">Add entry</h3>
+        <button class="modal-close" onclick="closeModal()">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="modal-meta" style="display:none;gap:6px;font-size:11px;color:var(--text3)"></div>
     </div>
     <div class="modal-body">
       <div class="form-grid">
@@ -474,10 +477,12 @@ const PRIORITY_ORDER= ['This Week','Next Week','On Hold'];
 
 async function quickUpdate(id,field,value){
   const idx=items.findIndex(i=>i.id===id);if(idx===-1)return;
-  items[idx]={...items[idx],[field]:value,updated:Date.now()};
+  const extra={updated:Date.now()};
+  if(field==='status') extra.status_changed_at=Date.now();
+  items[idx]={...items[idx],[field]:value,...extra};
   setSync('syncing','Saving…');
   try{
-    await dbFetch(`${API}?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({[field]:value,updated:Date.now()}),headers:{...HEADERS,'Prefer':'return=minimal'}});
+    await dbFetch(`${API}?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({[field]:value,...extra}),headers:{...HEADERS,'Prefer':'return=minimal'}});
     setSync('synced','Saved ✓');render();
   }catch(e){setSync('error','Save failed');console.error(e);}
 }
@@ -769,7 +774,7 @@ function selectOwner(val,isNew){
 function openModal(id){
   editingId=id||null;
   const m=id?items.find(i=>i.id===id):null;
-  document.getElementById('modal-title').textContent=m?'Edit entry':'Add entry';
+  document.getElementById('modal-title').textContent=m?(m.name||'Edit entry'):'Add entry';
   populateParentDropdown(m?.parent||'');
   if(m?.parent){
     onParentChange();
@@ -790,8 +795,24 @@ function openModal(id){
   currentScreenshots=m?.screenshots?[...m.screenshots]:[];
   renderScreenshots();
   document.getElementById('delete-btn').style.display=m?'inline-flex':'none';
+  // Meta info: created + status changed timestamps
+  const metaEl=document.getElementById('modal-meta');
+  if(m){
+    const createdStr=m.created_at?formatDate(m.created_at):'—';
+    const statusChangedStr=m.status_changed_at?formatDate(m.status_changed_at):createdStr;
+    metaEl.style.display='flex';
+    metaEl.innerHTML=`<span>Added ${createdStr}</span><span>·</span><span>Status changed ${statusChangedStr}</span>`;
+  } else {
+    metaEl.style.display='none';
+  }
   document.getElementById('modal-bg').classList.add('open');
   setTimeout(()=>document.getElementById('f-parent').focus(),50);
+}
+
+function formatDate(ts){
+  const d=new Date(ts);
+  if(isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
 }
 
 function closeModal(){
@@ -843,15 +864,20 @@ async function saveItem(){
 
   const ownerVal=document.getElementById('f-owner-input').value.trim();
   if(ownerVal&&!ownersList.includes(ownerVal)){ownersList.push(ownerVal);ownersList.sort();}
+  const newStatus=document.getElementById('f-status').value;
+  const existing=editingId?items.find(i=>i.id===editingId):null;
+  const statusChanged=!existing || existing.status!==newStatus;
   const item={
     id:editingId||uid(),name,parent,
     owner:document.getElementById('f-owner-input').value.trim(),
-    status:document.getElementById('f-status').value,
+    status:newStatus,
     priority:document.getElementById('f-priority-input').value,
     notes:document.getElementById('f-notes').value.trim(),
     screenshots:currentScreenshots,
     handoff:document.getElementById('f-handoff').value.trim(),
     type:document.getElementById('f-type').value,
+    created_at:existing?.created_at||Date.now(),
+    status_changed_at:statusChanged?Date.now():(existing?.status_changed_at||existing?.created_at||Date.now()),
     updated:Date.now()
   };
   setSync('syncing','Saving…');
@@ -994,8 +1020,7 @@ function renderTable(){
   document.getElementById('main-view').innerHTML=`
     <div class="tbl-wrap"><table>
       <thead><tr>
-        <th style="width:9%">Parent page</th>
-        <th style="width:11%">Sub-page</th>
+        <th style="width:18%">Sub-page</th>
         <th style="width:9%">Type</th>
         <th style="width:11%">Status</th>
         <th style="width:10%">Priority</th>
@@ -1012,8 +1037,7 @@ function renderTable(){
         const notes=r.notes?`<span class="notes-cell" title="${esc(r.notes)}">${esc(r.notes)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
         const typeBadge=r.type?`<span class="badge ${TYPE_CLASS[r.type]||''}">${esc(r.type)}</span>`:'<span style="color:var(--text3);font-size:12px">—</span>';
         return `<tr onclick="openModal('${r.id}')">
-          <td>${r.parent?`<span class="parent-tag">${esc(r.parent)}</span>`:'—'}</td>
-          <td><span class="page-name">${esc(r.name)}</span></td>
+          <td><span class="page-name" title="${esc(r.parent||'')}">${esc(r.name)}</span></td>
           <td class="td-badge">${typeBadge}</td>
           <td class="td-badge" onclick="event.stopPropagation()">
             <div class="inline-select-wrap">
