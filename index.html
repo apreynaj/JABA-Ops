@@ -1024,7 +1024,7 @@ function renderTable(){
         <th style="width:9%">Type</th>
         <th style="width:11%">Status</th>
         <th style="width:10%">Priority</th>
-        <th style="width:5%">Owner</th>
+        <th style="width:9%">Owner</th>
         <th>Update needed</th>
         <th style="width:6%">Handoff</th>
         <th style="width:4%">📷</th>
@@ -1049,7 +1049,7 @@ function renderTable(){
               <span class="badge badge-btn ${PRIORITY_CLASS[r.priority]||''}" onclick="openInlineDropdown(event,'${r.id}','priority','${r.priority}',PRIORITY_ORDER,priorityColor)">${esc(r.priority)} ▾</span>
             </div>
           </td>
-          <td><span class="owner-chip" title="${esc(r.owner||'Unassigned')}">${ini}</span></td>
+          <td><span style="font-size:13px;color:var(--text)">${esc(r.owner||'—')}</span></td>
           <td>${notes}</td>
           <td>${handoff}</td>
           <td>${shots}</td>
